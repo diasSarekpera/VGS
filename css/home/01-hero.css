@@ -585,8 +585,9 @@
 
     .hero-content {
         flex-direction: column-reverse;
+        justify-content: center;
         text-align: center;
-        gap: 3.2rem;
+        gap: 5rem;
     }
 
     .hero-image img {
