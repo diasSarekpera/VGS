@@ -1,0 +1,461 @@
+/* ==========================================================
+   FOOTER — PREMIUM DARK GLASS + MODERN CORPORATE STYLE
+========================================================== */
+
+footer {
+    background: radial-gradient(
+        circle at top left,
+        #0b0f1a,
+        #05070d 45%,
+        #03040a 80%
+    );
+    color: #dfe3e8;
+    padding: 6rem 2.5rem 2.2rem;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Lato' sans-serif;
+}
+
+/* Halo doux premium */
+footer::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(0,110,255,0.18), transparent 70%);
+    filter: blur(100px);
+    opacity: .45;
+    z-index: 0;
+}
+
+/* Ligne lumineuse très subtile */
+footer::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(to top, rgba(255,255,255,0.05), transparent);
+    opacity: .5;
+}
+
+/* ==========================================================
+   GRID PRINCIPALE
+========================================================== */
+
+.footer-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1350px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1.2fr;
+    gap: 3.5rem;
+}
+
+/* ==========================================================
+   TITRES
+========================================================== */
+
+.footer-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .8px;
+    margin-bottom: 1.3rem;
+    color: #fff;
+    position: relative;
+    font-family: 'Poppins' serif;
+
+}
+
+/* Petit trait lumineux sous le titre */
+.footer-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 38px;
+    height: 2px;
+    background: var(--color-primary);
+    border-radius: 2px;
+}
+
+/* ==========================================================
+   LISTES + LIENS
+========================================================== */
+
+.footer-list {
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    list-style: none;
+    padding: 0;
+}
+
+.footer-list li,
+.footer-list a {
+    color: #c7cbd2;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    font-size: .97rem;
+    transition: .28s ease;
+}
+
+.footer-list a:hover {
+    color: #fff;
+    transform: translateX(6px);
+}
+
+.footer-list i,
+.contact-info i {
+    color: var(--color-primary);
+    opacity: .95;
+    font-size: 1.05rem;
+}
+
+/* ==========================================================
+   SOCIAL ICONS — STYLE PREMIUM
+========================================================== */
+
+.social-icons {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icons a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #eaeaea;
+    transition: .32s ease;
+}
+
+.social-icons a:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 0 6px rgba(0,110,255,0.28);
+}
+
+.social-icons a:hover i{
+    color: #fff;
+}
+
+.contact-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* ==========================================================
+   CITATION — BLOc PREMIUM
+========================================================== */
+
+.footer-quote {
+    font-style: italic;
+    color: #b9bec9;
+    font-size: 1.02rem;
+    line-height: 1.7;
+    padding: 1.8rem 1.6rem;
+    border-left: 4px solid var(--color-primary);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px);
+}
+
+/* ==========================================================
+   BAS DU FOOTER
+========================================================== */
+
+.footer-bottom {
+    margin-top: 4.5rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 1.6rem;
+}
+
+.footer-bottom p {
+    color: #a8aeb7;
+    font-size: .92rem;
+    letter-spacing: .4px;
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 1050px) {
+    .footer-container {
+        grid-template-columns: 1.3fr 1fr 1fr;
+    }
+    .footer-quote {
+        grid-column: span 3;
+    }
+}
+
+@media (max-width: 750px) {
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+    }
+    .footer-quote {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 550px) {
+    footer {
+        padding: 4rem 1.4rem 1.8rem;
+    }
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2.8rem;
+    }
+    .footer-quote {
+        grid-column: span 1;
+        border-left: none;
+        padding-left: 0;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.05);
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE — AJUSTEMENTS INTELLIGENTS & FLUIDES
+   (À AJOUTER À LA FIN DE TON CSS)
+========================================================== */
+
+/* ================================
+   1000px → Alignement + Respiration
+================================ */
+@media (max-width: 1000px) {
+    .footer-container {
+        gap: 3rem;
+    }
+
+    .footer-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* ================================
+   850px → Réduction progressive
+================================ */
+@media (max-width: 850px) {
+    footer {
+        padding: 5rem 2rem 2rem;
+    }
+
+    .footer-list li,
+    .footer-list a {
+        font-size: .95rem;
+    }
+
+    .footer-quote {
+        font-size: .98rem;
+        padding: 1.6rem 1.4rem;
+    }
+}
+
+/* ================================
+   700px → grille 2 colonnes stable
+================================ */
+@media (max-width: 700px) {
+
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+    }
+
+    .footer-section {
+        padding-right: .5rem;
+    }
+
+    .footer-quote {
+        grid-column: span 2;
+        margin-top: .8rem;
+    }
+
+    .social-icons a {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+}
+
+/* ================================
+   550px → mobile principal (réglages fins)
+================================ */
+@media (max-width: 550px) {
+
+    footer {
+        padding: 3.8rem 1.3rem 1.6rem;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2.4rem;
+    }
+
+    .footer-title {
+        font-size: 1.15rem;
+    }
+
+    .footer-list li,
+    .footer-list a {
+        font-size: .92rem;
+        gap: .6rem;
+    }
+
+    .social-icons {
+        gap: .8rem;
+    }
+
+    .social-icons a {
+        width: 36px;
+        height: 36px;
+        font-size: .9rem;
+    }
+
+    .footer-quote {
+        font-size: .94rem;
+        padding: 1.4rem 1.2rem;
+        border-left: none;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .footer-bottom p {
+        font-size: .88rem;
+    }
+}
+
+/* ================================
+   420px → petits téléphones
+================================ */
+@media (max-width: 420px) {
+
+    .footer-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .footer-list li,
+    .footer-list a {
+        font-size: .9rem;
+    }
+
+    .social-icons a {
+        width: 34px;
+        height: 34px;
+    }
+
+    .footer-quote {
+        font-size: .9rem;
+        padding: 1.25rem 1.1rem;
+    }
+}
+
+/* ================================
+   360px → Ultra-small (iPhone SE)
+================================ */
+@media (max-width: 360px) {
+    footer {
+        padding: 3.2rem 1rem 1.3rem;
+    }
+
+    .footer-title {
+        font-size: 1.05rem;
+    }
+
+    .footer-list a,
+    .footer-list li {
+        font-size: .88rem;
+    }
+
+    .footer-bottom p {
+        font-size: .82rem;
+    }
+}
+
+/* ==========================================================
+   ✅ FOOTER MOBILE — VERSION PLUS PROPRE & LISIBLE
+   (À AJOUTER À LA FIN)
+========================================================== */
+
+@media (max-width: 550px) {
+
+    /* Contenu centré + respiration */
+    .footer-container {
+        text-align: center;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    /* Titres recentrés et plus élégants */
+    .footer-title {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .footer-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Listes mieux alignées */
+    .footer-list {
+        align-items: center;
+    }
+
+    .footer-list li,
+    .footer-list a {
+        justify-content: center;
+    }
+
+    /* Contact info recentré */
+    .contact-info {
+        align-items: center;
+    }
+
+    /* Icônes sociales — centrage + espace */
+    .social-icons {
+        justify-content: center;
+        margin-top: 1.2rem;
+        gap: .9rem;
+    }
+
+    /* Citation — moins large & plus légère */
+    .footer-quote {
+        text-align: center;
+        padding: 1.2rem 1rem;
+        font-size: .92rem;
+        line-height: 1.5;
+        max-width: 90%;
+        margin: 0 auto;
+    }
+
+    /* Bas du footer plus fin */
+    .footer-bottom {
+        margin-top: 2.5rem;
+        padding-top: 1.2rem;
+    }
+
+    .footer-bottom p {
+        font-size: .86rem;
+    }
+}
+
