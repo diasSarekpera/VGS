@@ -267,7 +267,8 @@
     .about-description {
         font-size: 1rem;
         line-height: 1.65;
-        text-align: center;
+        text-align: justify;
+        hyphens: auto;
     }
 
     .about-values {
