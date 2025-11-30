@@ -91,6 +91,8 @@
     line-height: 1.7;
     font-size: 1.05rem;
     font-family: 'Inter', serif;
+    text-align: justify;
+    hyphens: auto;
 }
 
 /* ------------------------------
