@@ -64,7 +64,7 @@
             
                     <nav class="main-nav">
                         <ul>
-                            <li><a href="/">Accueil</a></li>
+                            <li><a href="#accueil">Accueil</a></li>
                             <li><a href="#about">À propos</a></li>
                             <li><a href="#services">Services</a></li>
                             <li><a href="#contact">Contact</a></li>
@@ -93,7 +93,7 @@
             <!-- MENU MOBILE -->
             <nav class="overlay-mobile-menu" aria-label="Menu mobile">
                 <ul class="menu">
-                    <li><a href="/">Accueil</a></li>
+                    <li><a href="#accueil">Accueil</a></li>
                     <li><a href="#about">À propos</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -118,11 +118,10 @@
                 </div>
 
                 <div class="hero-image">
-                    <img src="./assets/images/illustration.png" alt="Documents administratifs">
+                    <img src="./assets/images/brand.png" alt="Documents administratifs">
                 </div>
             </div>
         </section>
-
 
         <!-- SECTION CHIFFRES CLÉS -->
         <section class="key-stats-section reveal-section" role="region" aria-label="Section des chiffres clés" >
@@ -145,7 +144,6 @@
                 </div>
             </div>
         </section>
-
 
         <!-- SECTION QUI SOMMES-NOUS -->
         <section class="about reveal-section" id="about" role="region" aria-labelledby="about-title">
@@ -195,7 +193,6 @@
 
             </div>
         </section>
-
 
         <!-- SECTION SERVICES -->
         <section class="services reveal-section" id="services" role="region" aria-labelledby="services-title">
@@ -259,7 +256,6 @@
             </div>
         </section>
 
-
         <!-- SECTION NOTRE ENGAGEMENT -->
         <section class="commitment reveal-section" id="commitment" role="region" aria-labelledby="commitment-title">
             <div class="container commitment-wrapper">
@@ -309,37 +305,40 @@
             </div>
         </section>
 
-
         <!-- SECTION CONTACT -->
-        <section class="contact reveal-section" id="contact" role="region" role="region" aria-labelledby="contact-title">
-            <header class="contact-header reveal-header ">
-                <h2 class="contact-title">Contactez-nous</h2>
+        <section class="contact reveal-section" id="contact" role="region" aria-labelledby="contact-title">
+            <header class="contact-header reveal-header">
+                <h2 class="contact-title" id="contact-title">Contactez-nous</h2>
                 <h1 class="contact-heading">Ensemble, parlons-en</h1>
             </header>
-        
+
             <div class="contact-content">
+                
                 <!-- FORMULAIRE -->
-                <form class="contact-form reveal-card" action="#" method="post">
+                <form id="contactForm" class="contact-form reveal-card">
                     <div class="form-group">
                         <label for="name"><i class="fa-solid fa-user"></i></label>
-                        <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                        <input type="text" id="name" name="from_name" placeholder="Votre nom" required>
                     </div>
-            
+
                     <div class="form-group">
                         <label for="email"><i class="fa-solid fa-envelope"></i></label>
-                        <input type="email" id="email" name="email" placeholder="Votre adresse e-mail" required>
+                        <input type="email" id="email" name="from_email" placeholder="Votre adresse e-mail" required>
                     </div>
-            
+
                     <div class="form-group">
                         <label for="message"><i class="fa-solid fa-comment"></i></label>
                         <textarea id="message" name="message" rows="5" placeholder="Votre message..." required></textarea>
                     </div>
-            
-                    <button type="submit" class="btn">Envoyer</button>
+
+                    <!-- Page d'origine (facultatif mais utile) -->
+                    <input type="hidden" name="page" value="Accueil">
+
+                    <button type="submit" class="btn" id="contactSendBtn">Envoyer</button>
                 </form>
 
                 <div class="sparator"></div>
-        
+
                 <!-- INFORMATIONS DE CONTACT -->
                 <div class="contact-info">
                     <article class="reveal-card">
@@ -347,15 +346,15 @@
                             <i class="fa-solid fa-phone"></i>
                             <p class="info-title">Téléphone</p>
                         </div>
-                        <p>+229 (01 96 41 85 75 /01 43 38 36 60 /01 99 26 26 92)</p>
+                        <p>+229 (01 96 41 85 75 / 01 43 38 36 60 / 01 99 26 26 92)</p>
                     </article>
-            
+
                     <article class="reveal-card">
                         <div class="card-top">
                             <i class="fa-solid fa-envelope"></i>
                             <p class="info-title">Email</p>
                         </div>
-                        <p>tchidoufiovirgile@gmail.com </p>
+                        <p>tchidoufiovirgile@gmail.com</p>
                     </article>
 
                     <article class="reveal-card">
@@ -363,12 +362,11 @@
                             <i class="fa-solid fa-location-dot"></i>
                             <p class="info-title">Adresse</p>
                         </div>
-                        <p>Bénin, Atrokpocodji, M/TCHIDOUFIO,  LOT 135.</p>
+                        <p>Bénin, Atrokpocodji, M/TCHIDOUFIO, LOT 135.</p>
                     </article>
                 </div>
             </div>
         </section>
-
 
         <!-- SECTION TESTIMONIALS -->
         <section class="testimonials reveal-section" id="testimonials" role="region" aria-labelledby="testimonials-title">
@@ -443,7 +441,7 @@
             </div>
         </section>
 
-
+        <!-- SECTION FOOTER -->
         <footer class="footer" role="contentinfo">
             <div class="footer-container">
                 
@@ -498,22 +496,24 @@
             </div>
         </footer>
 
-        <!-- Bouton WhatsApp -->
+        <!-- BOUTON WHATSAPP-->
 		<a href="https://wa.me/22996418575"
-		class="whatsapp-float" 
-		target="_blank" 
-		aria-label="Contactez-nous sur WhatsApp">
-		<i class="fa-brands fa-whatsapp"></i>
+            class="whatsapp-float" 
+            target="_blank" 
+            aria-label="Contactez-nous sur WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
 		</a>
 
+        <!-- Fichiers JS -->
         <script src="./js/home/hero-burger.js"></script>
         <script src="./js/home/keys.js"></script>
         <script src="./js/home/about.js"></script>
         <script src="./js/home/services.js"></script>
+        <script src="./js/home/toast.js"></script>
+        <script src="./js/home/emaljs.js"></script>
+
     </body>
 </html>
-
-
 
 
 

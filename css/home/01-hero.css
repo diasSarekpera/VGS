@@ -465,16 +465,6 @@
     transform: scale(1.05);
 }
 
-.hero-image::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, rgba(60,130,246,0.25), transparent 70%);
-    z-index: -1;
-    background: radial-gradient(circle at 50% 50%, rgba(30,80,160,0.25), transparent 70%);
-    filter: blur(10px);
-}
-
 /* ==========================================================
    ANIMATIONS — CENTRALISÉES
 ========================================================== */
