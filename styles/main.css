@@ -53,7 +53,7 @@
 
 /* ---------- Réinitialisation de base ---------- */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -61,6 +61,7 @@ body {
   background: var(--white);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 img { max-width: 100%; display: block; }
 .icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
@@ -123,7 +124,7 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 600;
   font-size: 15px;
   border: 1.5px solid transparent;
-  white-space: nowrap;
+  max-width: 100%;
   /* transition + :active feedback are defined once, in the Motion Design section below */
 }
 .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
@@ -284,7 +285,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .mobile-nav.is-open { display: block; }
 .mobile-nav__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-.mobile-nav__top img { height: 32px; }
+.mobile-nav__top img { height: 32px; width: auto; }
 .mobile-nav__close {
   width: 38px; height: 38px; border: 1px solid var(--grey-300); border-radius: var(--radius-sm);
   background: none; display: flex; align-items: center; justify-content: center;
@@ -676,7 +677,7 @@ button { font-family: inherit; cursor: pointer; }
   gap: 36px;
   padding: 64px 20px 40px;
 }
-.footer__brand img { height: 36px; margin-bottom: 14px; }
+.footer__brand img { height: 36px; width: auto; margin-bottom: 14px; }
 .footer__brand p { color: rgba(255,255,255,0.65); font-size: 14px; margin-bottom: 18px; }
 .footer h4 {
   color: var(--white); font-size: 14px; text-transform: uppercase;
@@ -742,6 +743,7 @@ button { font-family: inherit; cursor: pointer; }
      8. En-tête au scroll & menu mobile
      9. Bouton WhatsApp flottant
      10. Apparitions au scroll (moteur générique .reveal)
+     11. Transition de page (fondu d'entrée + View Transitions API)
    ========================================================================= */
 
 /* ---------- 1. Jetons d'animation ---------- */
@@ -929,6 +931,22 @@ select:focus-visible, textarea:focus-visible {
 .reveal[data-reveal="right"] { transform: translateX(calc(var(--reveal-distance) * 1.4)); }
 .reveal[data-reveal="scale"] { transform: scale(0.96); }
 .reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- 11. Transition de page ----------
+   Deux mécanismes complémentaires pour éviter l'arrivée "sèche" d'une
+   nouvelle page : un fondu d'entrée universel (fonctionne partout), et
+   l'API View Transitions native pour un fondu enchaîné entre les pages
+   sur les navigateurs qui la supportent (dégradation silencieuse sinon). */
+@view-transition {
+  navigation: auto;
+}
+body {
+  animation: pageFadeIn 380ms var(--ease-out) both;
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 /* =========================================================================
    RESPONSIVE — Expérience conçue pour chaque appareil
