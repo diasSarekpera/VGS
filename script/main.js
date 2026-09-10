@@ -117,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // de cartes montent avec un léger décalage (stagger) qui guide l'œil
   // de gauche à droite sans jamais ralentir la lecture.
   var revealGroups = [
-    { selector: '.hero__content, .page-hero__content', direction: 'up' },
     { selector: '.section-head', direction: 'up' },
     { selector: '.stats__item', direction: 'up', stagger: 70 },
     { selector: '.svc-card', direction: 'up', stagger: 90 },

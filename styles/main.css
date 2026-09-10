@@ -858,21 +858,16 @@ select:focus-visible, textarea:focus-visible {
 .mini-action:hover svg { transform: scale(1.1); }
 
 /* ---------- 7. Champs de formulaire ----------
-   Le halo au focus indique clairement le champ actif. Les états
-   is-touched + :valid/:invalid s'appuient sur la validation native du
-   navigateur : aucune fausse confirmation d'envoi n'est simulée. */
+   Le changement de couleur de bordure au focus suffit à indiquer le
+   champ actif — pas de halo. Les états is-touched + :valid/:invalid
+   s'appuient sur la validation native du navigateur : aucune fausse
+   confirmation d'envoi n'est simulée. */
 .field input, .field select, .field textarea {
-  transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  transition: border-color var(--dur-base) var(--ease-out);
 }
 .field input:hover, .field select:hover, .field textarea:hover { border-color: var(--grey-600); }
-.field input:focus, .field select:focus, .field textarea:focus {
-  box-shadow: 0 0 0 3px rgba(18, 138, 46, 0.15);
-}
 .field.is-touched input:invalid, .field.is-touched select:invalid, .field.is-touched textarea:invalid {
   border-color: var(--red);
-}
-.field.is-touched input:invalid:focus, .field.is-touched textarea:invalid:focus {
-  box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.15);
 }
 .field.is-touched input:valid, .field.is-touched select:valid, .field.is-touched textarea:valid {
   border-color: var(--green);
@@ -946,6 +941,24 @@ body {
 @keyframes pageFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Hero : titre / texte / actions arrivent en cascade dès le premier
+   affichage. Animation CSS pure (pas d'IntersectionObserver) car ce
+   contenu est toujours visible au chargement — un observer ne garantit
+   pas de peindre l'état initial avant l'état final dans ce cas, ce qui
+   donnait un rendu sec. Ici le timing est fiable à chaque chargement. */
+.hero__content > *, .page-hero__content > * {
+  opacity: 0;
+  animation: heroFadeUp var(--dur-reveal) var(--ease-out) both;
+}
+.hero__content > *:nth-child(1), .page-hero__content > *:nth-child(1) { animation-delay: 120ms; }
+.hero__content > *:nth-child(2), .page-hero__content > *:nth-child(2) { animation-delay: 220ms; }
+.hero__content > *:nth-child(3), .page-hero__content > *:nth-child(3) { animation-delay: 320ms; }
+.hero__content > *:nth-child(4), .page-hero__content > *:nth-child(4) { animation-delay: 420ms; }
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(var(--reveal-distance)); }
+  to { opacity: 1; transform: none; }
 }
 
 /* =========================================================================
