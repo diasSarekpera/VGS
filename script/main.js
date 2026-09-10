@@ -1,0 +1,177 @@
+// =========================================================================
+// VIGO SERVICES (VGS) | Script principal partagé
+// Menu mobile, accordéon FAQ, en-tête au scroll, état des champs,
+// et moteur générique d'apparitions au scroll (Phase 5 — Motion Design).
+// Sans dépendance externe.
+// =========================================================================
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --- Menu mobile ---
+  var burger = document.querySelector('.header__burger');
+  var mobileNav = document.querySelector('.mobile-nav');
+  var closeBtn = document.querySelector('.mobile-nav__close');
+
+  function openMobileNav() {
+    mobileNav.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    mobileNav.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (burger && mobileNav) {
+    burger.addEventListener('click', openMobileNav);
+  }
+  if (closeBtn && mobileNav) {
+    closeBtn.addEventListener('click', closeMobileNav);
+  }
+  if (mobileNav) {
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) {
+        closeMobileNav();
+      }
+    });
+  }
+
+  // --- Accordéon FAQ ---
+  // La hauteur d'ouverture est calculée dynamiquement (scrollHeight) pour
+  // que l'animation reste précise quelle que soit la longueur du texte.
+  // aria-expanded est synchronisé à chaque changement d'état pour les
+  // technologies d'assistance.
+  var faqItems = document.querySelectorAll('.faq-item__q');
+  faqItems.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item');
+      var wasOpen = item.classList.contains('is-open');
+
+      item.parentElement.querySelectorAll('.faq-item').forEach(function (el) {
+        el.classList.remove('is-open');
+        var q = el.querySelector('.faq-item__q');
+        var a = el.querySelector('.faq-item__a');
+        if (q) q.setAttribute('aria-expanded', 'false');
+        if (a) a.style.maxHeight = '';
+      });
+
+      if (!wasOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        var answer = item.querySelector('.faq-item__a');
+        if (answer) answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+  // Un item peut être ouvert par défaut dans le HTML (class="is-open") :
+  // on calcule sa hauteur réelle dès le chargement, au lieu de dépendre
+  // d'une valeur CSS fixe qui pourrait tronquer un texte plus long.
+  document.querySelectorAll('.faq-item.is-open .faq-item__a').forEach(function (a) {
+    a.style.maxHeight = a.scrollHeight + 'px';
+  });
+
+  // --- Ombre légère sur l'en-tête au scroll ---
+  var header = document.querySelector('.header');
+  if (header) {
+    var toggleHeaderShadow = function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    toggleHeaderShadow();
+    window.addEventListener('scroll', toggleHeaderShadow, { passive: true });
+  }
+
+  // --- Menu déroulant "Services" : synchronise aria-expanded ---
+  // L'affichage reste piloté par CSS (:hover / :focus-within) ; ce script
+  // ne fait que refléter l'état pour les technologies d'assistance.
+  document.querySelectorAll('.nav__dropdown').forEach(function (dropdown) {
+    var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+    if (!toggle) return;
+    var setExpanded = function (value) { toggle.setAttribute('aria-expanded', value); };
+    dropdown.addEventListener('mouseenter', function () { setExpanded('true'); });
+    dropdown.addEventListener('mouseleave', function () { setExpanded('false'); });
+    dropdown.addEventListener('focusin', function () { setExpanded('true'); });
+    dropdown.addEventListener('focusout', function (e) {
+      if (!dropdown.contains(e.relatedTarget)) setExpanded('false');
+    });
+  });
+
+  // --- État "visité" des champs de formulaire ---
+  // N'active un style d'erreur/succès que si le navigateur détecte une
+  // contrainte réelle (required, type, pattern) : aucune validation ni
+  // confirmation d'envoi n'est simulée côté script.
+  document.querySelectorAll('.field input, .field select, .field textarea').forEach(function (input) {
+    input.addEventListener('blur', function () {
+      var field = input.closest('.field');
+      if (field) field.classList.add('is-touched');
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // Apparitions au scroll — moteur générique piloté par IntersectionObserver
+  // -----------------------------------------------------------------------
+  // Chaque groupe ci-dessous correspond à une famille de composants du
+  // design system. La direction du mouvement renforce la lecture : les
+  // colonnes .split s'ouvrent depuis leur bord extérieur, les grilles
+  // de cartes montent avec un léger décalage (stagger) qui guide l'œil
+  // de gauche à droite sans jamais ralentir la lecture.
+  var revealGroups = [
+    { selector: '.hero__content, .page-hero__content', direction: 'up' },
+    { selector: '.section-head', direction: 'up' },
+    { selector: '.stats__item', direction: 'up', stagger: 70 },
+    { selector: '.svc-card', direction: 'up', stagger: 90 },
+    { selector: '.pillar', direction: 'up', stagger: 80 },
+    { selector: '.step', direction: 'up', stagger: 100 },
+    { selector: '.check-card', direction: 'up', stagger: 70 },
+    { selector: '.testimonial', direction: 'up', stagger: 100 },
+    { selector: '.trio-stats', direction: 'scale' },
+    { selector: '.cta-banner, .cta-banner--plain', direction: 'up' },
+    { selector: '.callback', direction: 'up' },
+    { selector: '.contact-card', direction: 'left' },
+    { selector: '.contact-photo, .map-frame', direction: 'right' },
+    { selector: '.mini-action', direction: 'up', stagger: 80 },
+    { selector: '.faq-item', direction: 'up', stagger: 60 }
+  ];
+  var MAX_STAGGER_STEPS = 6; // au-delà, tout apparaît avec le même délai plafonné
+
+  revealGroups.forEach(function (group) {
+    document.querySelectorAll(group.selector).forEach(function (el, i) {
+      el.classList.add('reveal');
+      el.dataset.reveal = group.direction;
+      if (group.stagger) {
+        el.style.transitionDelay = (Math.min(i, MAX_STAGGER_STEPS) * group.stagger) + 'ms';
+      }
+    });
+  });
+
+  // Colonnes .split : le bloc qui suit visuellement l'image s'ouvre côté
+  // opposé, pour un effet de "dépliage" cohérent avec la mise en page —
+  // y compris quand .split--reverse inverse l'ordre visuel.
+  document.querySelectorAll('.split').forEach(function (split) {
+    var reversed = split.classList.contains('split--reverse');
+    Array.prototype.forEach.call(split.children, function (child, i) {
+      var fromLeft = (i === 0) !== reversed;
+      child.classList.add('reveal');
+      child.dataset.reveal = fromLeft ? 'left' : 'right';
+    });
+  });
+
+  // En mode "mouvement réduit", tout reste visible en permanence (géré
+  // aussi côté CSS par sécurité) : on n'observe donc rien de plus.
+  if (reduceMotion || !('IntersectionObserver' in window)) return;
+
+  var io = new IntersectionObserver(function (entries, observer) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function (el) {
+    io.observe(el);
+  });
+
+});

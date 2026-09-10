@@ -1,0 +1,1166 @@
+/* =========================================================================
+   VIGO SERVICES (VGS) | Feuille de style principale
+   Design system institutionnel : couleurs, typographies, composants
+   partagés par toutes les pages du site.
+   ========================================================================= */
+
+/* ---------- Variables ---------- */
+:root {
+  /* Couleurs de marque */
+  --navy: #00214C;
+  --navy-dark: #001736;
+  --navy-mid: #0A2E5C;
+  --green: #128A2E;
+  --green-dark: #0D6B23;
+  --green-pale: #E6F4EA;
+
+  /* Neutres */
+  --white: #FFFFFF;
+  --grey-100: #F4F6F7;
+  --grey-200: #E8ECEE;
+  --grey-300: #C9D0D6;
+  --grey-600: #5B6670;
+  --grey-900: #1A1F26;
+
+  /* Sémantiques */
+  --red: #B3261E;
+
+  /* Typographie */
+  --font-heading: 'Poppins', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Inter', 'Open Sans', 'Segoe UI', Arial, sans-serif;
+
+  /* Rayons : ton institutionnel, sobre, peu arrondi */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  /* Ombres légères */
+  --shadow-sm: 0 1px 3px rgba(0, 20, 45, 0.08);
+  --shadow-md: 0 6px 18px rgba(0, 20, 45, 0.10);
+  --shadow-lg: 0 12px 28px rgba(0, 20, 45, 0.14);
+
+  /* Largeurs */
+  --container: 1200px;
+  --container-pad: clamp(16px, 4vw, 20px);
+
+  /* Espacements de section — fluides, un seul token pour tous les écrans */
+  --section-py: clamp(40px, 3.6vw + 22px, 88px);
+  --section-gap-head: clamp(28px, 2.4vw + 16px, 48px);
+
+  /* Grille fluide de cartes : nombre de colonnes ajusté par largeur mini de carte */
+  --card-min: 240px;
+}
+
+/* ---------- Réinitialisation de base ---------- */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--grey-900);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+.icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+a { color: inherit; text-decoration: none; }
+ul { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--navy);
+  margin: 0 0 14px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+h1 { font-size: clamp(28px, 1.6vw + 24px, 42px); }
+h2 { font-size: clamp(22px, 0.9vw + 18px, 30px); }
+h3 { font-size: clamp(17px, 0.2vw + 16px, 19px); }
+p { margin: 0 0 16px; color: var(--grey-600); }
+button { font-family: inherit; cursor: pointer; }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+}
+
+.section {
+  padding: var(--section-py) 0;
+}
+.section--alt { background: var(--grey-100); }
+.section--navy { background: var(--navy); color: var(--white); }
+
+.section-head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--section-gap-head);
+}
+.section-head h2 { margin-bottom: 10px; }
+.section-head p { margin: 0; }
+.section-head .eyebrow {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-dark);
+  background: var(--green-pale);
+  padding: 5px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+}
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 26px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 15px;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+  /* transition + :active feedback are defined once, in the Motion Design section below */
+}
+.btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.btn--primary { background: var(--navy); color: var(--white); }
+.btn--primary:hover { background: var(--navy-dark); }
+
+.btn--accent { background: var(--green); color: var(--white); }
+.btn--accent:hover { background: var(--green-dark); }
+
+.btn--outline { background: transparent; color: var(--navy); border-color: var(--navy); }
+.btn--outline:hover { background: var(--navy); color: var(--white); }
+
+.btn--outline-light { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.7); }
+.btn--outline-light:hover { background: var(--white); color: var(--navy); }
+
+.btn--block { width: 100%; justify-content: center; }
+.btn--sm { padding: 10px 18px; font-size: 14px; }
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green-dark);
+  font-weight: 600;
+  font-size: 14px;
+  font-family: var(--font-heading);
+}
+.link-arrow svg { width: 15px; height: 15px; transition: transform 0.15s ease; }
+.link-arrow:hover svg { transform: translateX(3px); }
+
+/* ---------- Barre supérieure ---------- */
+.topbar {
+  background: var(--navy);
+  color: var(--white);
+  font-size: 13px;
+}
+.topbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.topbar__group { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.topbar__item { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.92); }
+.topbar__item svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+.topbar__item a { color: inherit; }
+.topbar__item a:hover { color: var(--green); }
+.topbar__social { display: flex; align-items: center; gap: 12px; }
+.topbar__social a {
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+}
+.topbar__social a svg { width: 13px; height: 13px; }
+.topbar__social a:hover { background: var(--green); border-color: var(--green); }
+
+/* ---------- En-tête / navigation ---------- */
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-200);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  gap: 24px;
+}
+.header__logo { display: flex; align-items: center; }
+.header__logo img { height: 40px; width: auto; }
+
+.nav { display: flex; align-items: center; gap: 34px; }
+.nav__link {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--navy);
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+}
+.nav__link:hover { color: var(--green-dark); }
+.nav__link.is-active { color: var(--green-dark); border-bottom-color: var(--green); }
+
+.nav__dropdown { position: relative; }
+.nav__dropdown-toggle {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--font-heading); font-weight: 600; font-size: 15px;
+  color: var(--navy); background: none; border: none; padding: 6px 0;
+}
+.nav__dropdown-toggle svg { width: 13px; height: 13px; }
+.nav__dropdown-toggle.is-active { color: var(--green-dark); }
+.nav__dropdown-menu {
+  position: absolute;
+  top: 100%; left: -16px;
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+  min-width: 240px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  /* transition defined once, in the Motion Design section below */
+}
+.nav__dropdown-menu-disabled {
+  display: block;
+  padding: 10px 12px;
+  font-size: 14.5px;
+  color: var(--grey-300);
+  cursor: default;
+}
+.badge-soon { font-size: 11px; }
+.footer__disabled { color: rgba(255, 255, 255, 0.4); cursor: default; }
+.nav__dropdown:hover .nav__dropdown-menu,
+.nav__dropdown:focus-within .nav__dropdown-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.nav__dropdown:hover .nav__dropdown-toggle svg { transform: rotate(180deg); }
+.nav__dropdown-menu a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  color: var(--grey-900);
+}
+.nav__dropdown-menu a:hover { background: var(--grey-100); color: var(--green-dark); }
+
+.header__actions { display: flex; align-items: center; gap: 16px; }
+.header__burger {
+  display: none;
+  width: 40px; height: 40px;
+  border: 1px solid var(--grey-300);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  align-items: center; justify-content: center;
+}
+.header__burger svg { width: 20px; height: 20px; color: var(--navy); }
+
+/* ---------- Menu mobile ---------- */
+.mobile-nav {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--white);
+  z-index: 200;
+  padding: 20px;
+  overflow-y: auto;
+}
+.mobile-nav.is-open { display: block; }
+.mobile-nav__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.mobile-nav__top img { height: 32px; }
+.mobile-nav__close {
+  width: 38px; height: 38px; border: 1px solid var(--grey-300); border-radius: var(--radius-sm);
+  background: none; display: flex; align-items: center; justify-content: center;
+}
+.mobile-nav__close svg { width: 18px; height: 18px; }
+.mobile-nav__link {
+  display: block; padding: 15px 4px; font-family: var(--font-heading);
+  font-weight: 600; font-size: 17px; color: var(--navy); border-bottom: 1px solid var(--grey-200);
+}
+.mobile-nav__sub { padding-left: 16px; }
+.mobile-nav__sub a { display: block; padding: 11px 4px; font-size: 15px; color: var(--grey-600); }
+.mobile-nav__cta { margin-top: 22px; }
+
+/* ---------- Fil d'ariane ---------- */
+.breadcrumb {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px;
+}
+.breadcrumb a { color: rgba(255,255,255,0.85); }
+.breadcrumb a:hover { color: var(--white); }
+
+/* ---------- Bandeau de page (hero secondaire) ---------- */
+.page-hero {
+  position: relative;
+  background: var(--navy);
+  color: var(--white);
+  padding: clamp(32px, 2.4vw + 22px, 48px) 0 clamp(40px, 3vw + 28px, 64px);
+  overflow: hidden;
+}
+.page-hero__bg {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.page-hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, rgba(0,33,76,0.95) 30%, rgba(0,33,76,0.62) 66%, rgba(0,33,76,0.38) 100%);
+}
+.page-hero__content { position: relative; max-width: 620px; }
+.page-hero h1 { color: var(--white); font-size: clamp(25px, 2vw + 18px, 36px); margin-bottom: 14px; }
+.page-hero p { color: rgba(255,255,255,0.88); font-size: clamp(15px, 0.3vw + 14px, 17px); margin-bottom: 26px; }
+
+/* ---------- Hero d'accueil ---------- */
+.hero {
+  position: relative;
+  color: var(--white);
+  overflow: hidden;
+}
+.hero__bg { position: absolute; inset: 0; background-size: cover; background-position: center 30%; }
+.hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, rgba(0,20,48,0.97) 26%, rgba(0,33,76,0.88) 52%, rgba(0,33,76,0.62) 78%, rgba(0,33,76,0.45) 100%);
+}
+.hero__content { position: relative; max-width: 560px; padding: clamp(64px, 9vw + 12px, 132px) 0 clamp(52px, 6vw + 16px, 104px); }
+.hero h1 { color: var(--white); font-size: clamp(29px, 3.6vw + 16px, 46px); margin-bottom: 16px; }
+.hero p { color: rgba(255,255,255,0.9); font-size: clamp(15.5px, 0.5vw + 14px, 18px); margin-bottom: 30px; }
+.hero__actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* ---------- Bandeau de confiance / stats ---------- */
+.stats {
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-200);
+}
+.stats .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding-top: 34px;
+  padding-bottom: 34px;
+}
+.stats__item { text-align: center; border-left: 1px solid var(--grey-200); }
+.stats__item:first-child { border-left: none; }
+.stats__num { font-family: var(--font-heading); font-weight: 700; font-size: 26px; color: var(--green-dark); display: block; }
+.stats__num--text { font-size: 20px; }
+.stats__label { font-size: 13.5px; color: var(--grey-600); }
+
+/* ---------- Bloc de 3 chiffres-clés (encadré) ---------- */
+.trio-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  padding: 34px 20px;
+}
+
+/* ---------- Grille de cartes services ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.card-grid--5 { grid-template-columns: repeat(5, 1fr); }
+.card-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.card-grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+.svc-card {
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* transition defined once, in the Motion Design section below */
+}
+.svc-card:hover { box-shadow: var(--shadow-md); border-color: transparent; }
+.svc-card__photo { aspect-ratio: 16 / 9; overflow: hidden; }
+.svc-card__photo img { width: 100%; height: 100%; object-fit: cover; }
+.svc-card__body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+.svc-card__icon {
+  width: 46px; height: 46px;
+  background: var(--green-pale);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.svc-card__icon svg { width: 24px; height: 24px; color: var(--green-dark); }
+.svc-card__body h3 { margin-bottom: 8px; }
+.svc-card__body p { font-size: 14.5px; flex: 1; margin-bottom: 14px; }
+
+/* Carte simple à coche (listes de documents) */
+.check-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.check-card {
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 20px 54px;
+  position: relative;
+}
+.check-card__mark {
+  position: absolute; left: 18px; top: 20px;
+  width: 24px; height: 24px;
+  background: var(--green-pale);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.check-card__mark svg { width: 13px; height: 13px; color: var(--green-dark); }
+.check-card h3 { font-size: 16px; margin-bottom: 4px; }
+.check-card p { font-size: 13.5px; margin: 0; }
+
+/* ---------- Piliers (icône + texte, sans carte) ---------- */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+.pillar { text-align: center; }
+.pillar__icon {
+  width: 54px; height: 54px;
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.pillar__icon svg { width: 34px; height: 34px; color: var(--green); }
+.pillar h3 { margin-bottom: 6px; }
+.pillar p { font-size: 14px; margin: 0; }
+
+/* ---------- Étapes numérotées ---------- */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.steps--3 { grid-template-columns: repeat(3, 1fr); }
+.step { text-align: center; padding: 0 18px; position: relative; }
+.step__num {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--green);
+  display: block;
+  margin-bottom: 10px;
+}
+.step h3 { font-size: 16.5px; margin-bottom: 6px; }
+.step p { font-size: 14px; margin: 0; }
+.step::after {
+  content: '';
+  position: absolute;
+  top: 18px; right: -2px;
+  width: 40%;
+  border-top: 2px dashed var(--grey-300);
+  display: none;
+}
+@media (min-width: 1024px) {
+  .step:not(:last-child)::after { display: block; }
+}
+
+/* ---------- Bloc CTA fort ---------- */
+.cta-banner {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: clamp(200px, 20vw, 280px) 1fr;
+  align-items: center;
+}
+.cta-banner__photo { height: 100%; min-height: 190px; }
+.cta-banner__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cta-banner__body { padding: 34px 40px; }
+.cta-banner__body h2 { color: var(--white); font-size: 24px; margin-bottom: 8px; }
+.cta-banner__body p { color: rgba(255,255,255,0.85); margin-bottom: 20px; }
+.cta-banner--plain { grid-template-columns: 1fr; text-align: center; padding: 46px 30px; }
+.cta-banner--plain .cta-banner__body { padding: 0; max-width: 560px; margin: 0 auto; }
+
+/* ---------- Mini-actions avant footer ---------- */
+.mini-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.mini-action {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 30px 20px;
+  border-left: 1px solid var(--grey-200);
+  text-align: left;
+}
+.mini-action:first-child { border-left: none; }
+.mini-action svg { width: 26px; height: 26px; color: var(--green); flex-shrink: 0; }
+.mini-action strong { display: block; font-family: var(--font-heading); color: var(--navy); font-size: 15px; }
+.mini-action span { font-size: 13px; color: var(--grey-600); }
+
+/* ---------- FAQ accordéon ---------- */
+.faq { max-width: 780px; margin: 0 auto; }
+.faq-item {
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  background: var(--white);
+  overflow: hidden;
+}
+.faq-item__q {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px;
+  background: none; border: none;
+  font-family: var(--font-heading); font-weight: 600; font-size: 15.5px;
+  color: var(--navy); text-align: left;
+}
+.faq-item__q svg { width: 18px; height: 18px; color: var(--green); flex-shrink: 0; transition: transform 0.15s ease; }
+.faq-item.is-open .faq-item__q svg { transform: rotate(45deg); }
+.faq-item__a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+  padding: 0 20px;
+}
+.faq-item.is-open .faq-item__a { max-height: 240px; padding-bottom: 18px; }
+.faq-item__a p { margin: 0; font-size: 14.5px; }
+
+/* ---------- Deux colonnes génériques ---------- */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.split--reverse { direction: rtl; }
+.split--reverse > * { direction: ltr; }
+.split img { border-radius: var(--radius-lg); width: 100%; }
+.split-list { margin-top: 18px; }
+.split-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 15px; color: var(--grey-900); }
+.split-list svg { width: 18px; height: 18px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
+
+/* Photo composition asymétrique (À propos) */
+.photo-collage { position: relative; display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; }
+.photo-collage img { border-radius: var(--radius-lg); }
+.photo-collage__stack { display: grid; gap: 14px; }
+
+/* ---------- Encadré demande de rappel ---------- */
+.callback {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.callback__intro {
+  background: var(--navy-dark);
+  color: var(--white);
+  padding: 34px;
+  border-left: 4px solid var(--green);
+}
+.callback__intro h3 { color: var(--white); margin-bottom: 8px; }
+.callback__intro p { color: rgba(255,255,255,0.82); margin: 0; font-size: 14.5px; }
+.callback__form {
+  background: var(--white);
+  padding: 30px 34px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.callback__form textarea,
+.callback__form input { grid-column: span 1; }
+.callback__form .btn { grid-column: span 2; justify-self: start; }
+.field--full { grid-column: span 2; }
+
+/* ---------- Formulaires ---------- */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block; font-family: var(--font-heading); font-weight: 600;
+  font-size: 14px; color: var(--navy); margin-bottom: 7px;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--grey-300);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--grey-900);
+  background: var(--white);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--green);
+}
+.field textarea { resize: vertical; min-height: 120px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+
+/* ---------- Bloc contact ---------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.contact-card {
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.contact-info { display: flex; flex-direction: column; gap: 16px; margin-bottom: 22px; }
+.contact-info__item { display: flex; align-items: flex-start; gap: 12px; }
+.contact-info__item svg { width: 20px; height: 20px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
+.contact-info__item strong { display: block; font-family: var(--font-heading); color: var(--navy); font-size: 14.5px; }
+.contact-info__item span { font-size: 14px; color: var(--grey-600); }
+.contact-photo { border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 18px; }
+.contact-photo img { width: 100%; height: 190px; object-fit: cover; }
+.contact-actions { display: flex; gap: 12px; }
+.map-frame {
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 380px;
+}
+.map-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.map-frame--sm { height: 150px; }
+
+/* ---------- Témoignages ---------- */
+.testimonials { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+.testimonial {
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+}
+.testimonial svg { width: 26px; height: 20px; color: var(--green); margin-bottom: 12px; }
+.testimonial p { font-style: italic; color: var(--grey-900); margin-bottom: 16px; font-size: 15px; }
+.testimonial strong { display: block; font-family: var(--font-heading); color: var(--navy); font-size: 14.5px; }
+.testimonial span { font-size: 13px; color: var(--grey-600); }
+
+/* ---------- Infos légales ---------- */
+.legal-box {
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.legal-box__row { display: flex; justify-content: center; gap: 40px; margin: 16px 0; flex-wrap: wrap; }
+.legal-box__row div strong { display: block; font-family: var(--font-heading); color: var(--navy); }
+
+/* ---------- Pied de page ---------- */
+.footer { background: var(--navy-dark); color: rgba(255,255,255,0.82); }
+.footer .container {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.2fr 1.1fr;
+  gap: 36px;
+  padding: 64px 20px 40px;
+}
+.footer__brand img { height: 36px; margin-bottom: 14px; }
+.footer__brand p { color: rgba(255,255,255,0.65); font-size: 14px; margin-bottom: 18px; }
+.footer h4 {
+  color: var(--white); font-size: 14px; text-transform: uppercase;
+  letter-spacing: 0.05em; margin-bottom: 18px; font-family: var(--font-heading);
+}
+.footer ul li { margin-bottom: 11px; }
+.footer ul li a { color: rgba(255,255,255,0.75); font-size: 14.5px; }
+.footer ul li a:hover { color: var(--green); }
+.footer__contact li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.75); }
+.footer__contact svg { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; margin-top: 3px; }
+.footer__social { display: flex; gap: 10px; }
+.footer__social a {
+  width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+}
+.footer__social a svg { width: 15px; height: 15px; }
+.footer__social a:hover { background: var(--green); border-color: var(--green); }
+.footer__map { border-radius: var(--radius-md); overflow: hidden; height: 130px; border: 1px solid rgba(255,255,255,0.15); }
+.footer__map iframe { width: 100%; height: 100%; border: 0; filter: grayscale(0.15); }
+.footer__bottom {
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding: 18px 20px;
+}
+.footer__bottom .container {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0; gap: 12px; flex-wrap: wrap;
+  grid-template-columns: none;
+}
+.footer__bottom p { margin: 0; font-size: 13px; color: rgba(255,255,255,0.6); }
+.footer__bottom-links { display: flex; gap: 20px; }
+.footer__bottom-links a { font-size: 13px; color: rgba(255,255,255,0.6); }
+.footer__bottom-links a:hover { color: var(--white); }
+
+/* ---------- Bouton WhatsApp flottant ---------- */
+.float-whatsapp {
+  position: fixed;
+  right: 22px; bottom: 22px;
+  width: 56px; height: 56px;
+  background: var(--green);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-lg);
+  z-index: 150;
+  /* transition + idle pulse defined once, in the Motion Design section below */
+}
+.float-whatsapp svg { width: 28px; height: 28px; color: var(--white); }
+
+/* =========================================================================
+   MOTION DESIGN & MICRO-INTERACTIONS — Phase 5
+   ---------------------------------------------------------------------
+   Un seul langage de mouvement pour tout le site : mêmes courbes, mêmes
+   durées, mêmes intentions. Chaque transition confirme une action,
+   oriente le regard ou indique un état — jamais de décoration gratuite.
+
+   Sommaire :
+     1. Jetons d'animation (durées, courbes)
+     2. Accessibilité — prefers-reduced-motion & focus clavier
+     3. Boutons — hover / active / focus / disabled
+     4. Liens & icônes de navigation
+     5. Cartes (services, checklist, témoignages)
+     6. Piliers, étapes, mini-actions
+     7. Champs de formulaire — focus / survol / validation
+     8. En-tête au scroll & menu mobile
+     9. Bouton WhatsApp flottant
+     10. Apparitions au scroll (moteur générique .reveal)
+   ========================================================================= */
+
+/* ---------- 1. Jetons d'animation ---------- */
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;   /* hover ponctuel (icônes, liens) */
+  --dur-base: 260ms;   /* changement d'état (boutons, cartes simples) */
+  --dur-slow: 450ms;   /* cartes riches, menu, en-tête */
+  --dur-reveal: 650ms; /* apparitions au scroll */
+  --reveal-distance: 22px;
+}
+
+/* ---------- 2. Accessibilité — clavier ---------- */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* ---------- 3. Boutons ----------
+   Hover : légère élévation + ombre — le bouton "répond" au curseur.
+   Active : retour au plat, transition très courte — sensation de clic.
+   Disabled : plus aucun mouvement, opacité réduite. */
+.btn {
+  transition: background var(--dur-base) var(--ease-out),
+              color var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+.btn--primary:hover, .btn--accent:hover,
+.btn--outline:hover, .btn--outline-light:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.btn:active { transform: translateY(0); box-shadow: var(--shadow-sm); transition-duration: 90ms; }
+.btn:disabled, .btn[disabled] {
+  opacity: 0.55; cursor: not-allowed; box-shadow: none; transform: none;
+}
+.btn svg { transition: transform var(--dur-base) var(--ease-out); }
+
+/* ---------- 4. Liens & icônes de navigation ---------- */
+.nav__link {
+  transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.nav__link:hover:not(.is-active) { border-bottom-color: rgba(18, 138, 46, 0.35); }
+
+.nav__dropdown-toggle { transition: color var(--dur-base) var(--ease-out); }
+.nav__dropdown-toggle:hover { color: var(--green-dark); }
+.nav__dropdown-toggle svg { transition: transform var(--dur-base) var(--ease-out); }
+.nav__dropdown-menu {
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility var(--dur-base);
+}
+.nav__dropdown-menu a { transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+
+.link-arrow svg { transition: transform var(--dur-base) var(--ease-out); }
+
+.footer ul li a, .footer__bottom-links a, .breadcrumb a, .topbar__item a {
+  transition: color var(--dur-base) var(--ease-out);
+}
+.topbar__social a, .footer__social a {
+  transition: background var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+.topbar__social a:hover, .footer__social a:hover { transform: translateY(-2px); }
+
+.mobile-nav__link, .mobile-nav__sub a {
+  transition: color var(--dur-base) var(--ease-out), padding-left var(--dur-base) var(--ease-out);
+}
+.mobile-nav__link:hover, .mobile-nav__sub a:hover { padding-left: 4px; color: var(--green-dark); }
+
+/* ---------- 5. Cartes ----------
+   Élévation + zoom photo doux : la carte "sort" légèrement de la page,
+   l'icône se colore pour confirmer l'interaction. */
+.svc-card {
+  transition: box-shadow var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out),
+              border-color var(--dur-slow) var(--ease-out);
+}
+.svc-card:hover { transform: translateY(-6px); }
+.svc-card__photo img { transition: transform var(--dur-slow) var(--ease-out); }
+.svc-card:hover .svc-card__photo img { transform: scale(1.06); }
+.svc-card__icon { transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+.svc-card__icon svg { transition: color var(--dur-base) var(--ease-out); }
+.svc-card:hover .svc-card__icon { background: var(--green); transform: scale(1.06); }
+.svc-card:hover .svc-card__icon svg { color: var(--white); }
+
+.check-card { transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+.check-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.check-card__mark { transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+.check-card__mark svg { transition: color var(--dur-base) var(--ease-out); }
+.check-card:hover .check-card__mark { background: var(--green); transform: scale(1.08); }
+.check-card:hover .check-card__mark svg { color: var(--white); }
+
+.testimonial { transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+.testimonial:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+/* ---------- 6. Piliers, étapes, mini-actions ---------- */
+.pillar__icon svg { transition: transform var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
+.pillar:hover .pillar__icon svg { transform: scale(1.12) rotate(-4deg); color: var(--green-dark); }
+
+.step__num { display: inline-block; transition: transform var(--dur-base) var(--ease-out); }
+.step:hover .step__num { transform: translateY(-3px); }
+
+.mini-action { transition: background var(--dur-base) var(--ease-out); }
+.mini-action:hover { background: var(--grey-100); }
+.mini-action svg { transition: transform var(--dur-base) var(--ease-out); }
+.mini-action:hover svg { transform: scale(1.1); }
+
+/* ---------- 7. Champs de formulaire ----------
+   Le halo au focus indique clairement le champ actif. Les états
+   is-touched + :valid/:invalid s'appuient sur la validation native du
+   navigateur : aucune fausse confirmation d'envoi n'est simulée. */
+.field input, .field select, .field textarea {
+  transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--grey-600); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  box-shadow: 0 0 0 3px rgba(18, 138, 46, 0.15);
+}
+.field.is-touched input:invalid, .field.is-touched select:invalid, .field.is-touched textarea:invalid {
+  border-color: var(--red);
+}
+.field.is-touched input:invalid:focus, .field.is-touched textarea:invalid:focus {
+  box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.15);
+}
+.field.is-touched input:valid, .field.is-touched select:valid, .field.is-touched textarea:valid {
+  border-color: var(--green);
+}
+
+/* ---------- 8. En-tête au scroll & menu mobile ---------- */
+.header { transition: box-shadow var(--dur-base) var(--ease-out); }
+.header.is-scrolled { box-shadow: 0 2px 10px rgba(0, 20, 45, 0.08); }
+
+.mobile-nav {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out),
+              visibility var(--dur-slow);
+}
+.mobile-nav.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
+.mobile-nav__link, .mobile-nav__cta {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.mobile-nav.is-open .mobile-nav__link, .mobile-nav.is-open .mobile-nav__cta { opacity: 1; transform: translateY(0); }
+.mobile-nav.is-open .mobile-nav__link:nth-of-type(1) { transition-delay: 40ms; }
+.mobile-nav.is-open .mobile-nav__link:nth-of-type(2) { transition-delay: 80ms; }
+.mobile-nav.is-open .mobile-nav__link:nth-of-type(3) { transition-delay: 120ms; }
+.mobile-nav.is-open .mobile-nav__link:nth-of-type(4) { transition-delay: 160ms; }
+.mobile-nav.is-open .mobile-nav__cta { transition-delay: 200ms; }
+
+/* ---------- 9. Bouton WhatsApp flottant ----------
+   Respiration très discrète pour attirer l'œil sans jamais distraire ;
+   suspendue au survol pour laisser place au retour tactile direct. */
+.float-whatsapp {
+  transition: transform var(--dur-base) var(--ease-out);
+  animation: floatPulse 2.8s var(--ease-in-out) infinite;
+}
+.float-whatsapp:hover { transform: scale(1.08); animation-play-state: paused; }
+@keyframes floatPulse {
+  0%, 100% { box-shadow: var(--shadow-lg); }
+  50% { box-shadow: var(--shadow-lg), 0 0 0 8px rgba(18, 138, 46, 0.12); }
+}
+
+/* ---------- 10. Apparitions au scroll ----------
+   Moteur générique piloté par script/main.js (IntersectionObserver).
+   .reveal + [data-reveal] définissent l'état de départ ; .is-visible
+   ramène l'élément à son état final. Propriétés GPU uniquement
+   (opacity, transform) pour une fluidité maximale. */
+.reveal {
+  opacity: 0;
+  transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
+}
+.reveal[data-reveal="up"] { transform: translateY(var(--reveal-distance)); }
+.reveal[data-reveal="left"] { transform: translateX(calc(-1 * var(--reveal-distance) * 1.4)); }
+.reveal[data-reveal="right"] { transform: translateX(calc(var(--reveal-distance) * 1.4)); }
+.reveal[data-reveal="scale"] { transform: scale(0.96); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* =========================================================================
+   RESPONSIVE — Expérience conçue pour chaque appareil
+   ---------------------------------------------------------------------
+   La typographie et les rythmes verticaux sont déjà fluides (clamp())
+   dans les règles de base ci-dessus : ils s'ajustent en continu, sans
+   à-coups, entre chaque palier ci-dessous. Les media queries qui suivent
+   s'occupent uniquement de ce que le fluide ne peut pas résoudre seul :
+   la RECOMPOSITION structurelle (colonnes, ordre, densité, cibles
+   tactiles) propre à chaque famille d'appareils.
+
+   Paliers couverts (regroupés logiquement, du plus grand au plus petit) :
+     A. ≥ 1600px   Très grand écran      — plus d'air, composition aérée
+     B. 1280–1599  Desktop (référence)   — design de base ci-dessus
+     C. 1024–1279  Laptop / petit laptop — grilles resserrées
+     D. 768–1023   Tablette              — navigation tactile dédiée,
+                                            grilles 2 colonnes, formulaires
+                                            pleine largeur
+     E. 576–767    Grand smartphone      — colonne unique, rythme mobile
+     F. 430–575    Smartphone standard   — densité mobile affinée
+     G. ≤ 429      Petit smartphone      — compacité maximale, lisibilité
+   ========================================================================= */
+
+/* ---------- A. Très grand écran (≥ 1600px) ----------
+   Le site ne doit pas simplement "flotter" avec des marges énormes :
+   on élargit légèrement le canevas et on laisse le rythme vertical
+   fluide (déjà au maximum de son clamp) respirer davantage. */
+@media (min-width: 1600px) {
+  :root { --container: 1320px; }
+  .hero__content { max-width: 620px; }
+  .page-hero__content { max-width: 680px; }
+  .card-grid--5 { gap: 26px; }
+}
+
+/* ---------- C. Laptop / petit laptop (1024–1279px) ----------
+   Le contenu tient encore sur une ligne de navigation horizontale,
+   mais les grilles à 5 colonnes commencent à écraser les cartes :
+   on referme d'un cran plutôt que de laisser les proportions se casser. */
+@media (max-width: 1279px) {
+  .card-grid--5 { grid-template-columns: repeat(3, 1fr); }
+  .footer .container { grid-template-columns: 1fr 1fr; }
+  .footer__brand { grid-column: span 2; }
+  .cta-banner { grid-template-columns: 220px 1fr; }
+  .split { gap: 40px; }
+  .contact-grid { gap: 20px; }
+}
+
+/* ---------- D. Tablette (768–1023px) ----------
+   Une tablette n'est ni un petit laptop ni un grand téléphone : c'est un
+   écran tactile large. La navigation horizontale avec menu déroulant au
+   survol n'y fonctionne pas bien (pas de hover) — on bascule donc sur le
+   menu plein écran, pensé pour le doigt. Les grilles passent à 2 colonnes
+   (ni écrasées à 3, ni gaspillées à 1) et les formulaires s'étirent en
+   pleine largeur pour rester confortables à remplir au doigt. */
+@media (max-width: 1023px) {
+  .nav, .header__actions .btn { display: none; }
+  .header__burger { display: flex; }
+
+  .card-grid, .card-grid--5, .card-grid--2, .card-grid--3, .check-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pillars { grid-template-columns: repeat(2, 1fr); gap: 32px 20px; }
+
+  .steps, .steps--3 { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
+  .step { text-align: left; padding: 0; }
+
+  .testimonials { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+
+  .split { grid-template-columns: 1fr; gap: 32px; }
+  .split--reverse { direction: ltr; }
+  .split img { max-height: 340px; object-fit: cover; }
+
+  .callback { grid-template-columns: 1fr; }
+  .callback__intro { border-left: none; border-top: 4px solid var(--green); }
+  .callback__form, .form-grid { grid-template-columns: 1fr; }
+  .callback__form .btn { grid-column: span 1; justify-self: stretch; }
+
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-photo img { height: 240px; }
+
+  .photo-collage { grid-template-columns: 1fr 1fr; }
+
+  .mini-actions { grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .mini-action { padding: 26px 16px; font-size: 14px; }
+
+  .footer__social a, .topbar__social a { width: 40px; height: 40px; }
+}
+
+/* ---------- E. Grand smartphone (576–767px) ----------
+   Point de bascule vers une mise en page mobile à part entière : colonne
+   unique partout, hiérarchie verticale claire, cibles tactiles ≥ 44px. */
+@media (max-width: 767px) {
+  .topbar .container { justify-content: center; text-align: center; }
+  .topbar__group { justify-content: center; gap: 14px 18px; }
+  .topbar__social { display: none; }
+
+  .hero__content { max-width: 100%; }
+  .hero__actions { flex-direction: column; }
+  .hero__actions .btn { width: 100%; justify-content: center; min-height: 48px; }
+
+  .page-hero { padding-bottom: 44px; }
+
+  .stats .container { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; padding-top: 26px; padding-bottom: 26px; }
+  .stats__item:nth-child(3) { border-left: none; }
+
+  .card-grid, .card-grid--5, .card-grid--2, .card-grid--3, .check-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .svc-card__photo { aspect-ratio: 16 / 10; }
+
+  .pillars { grid-template-columns: repeat(2, 1fr); gap: 26px 14px; }
+
+  .steps, .steps--3 { grid-template-columns: 1fr; gap: 28px; }
+  .step { text-align: center; padding: 0 12px; }
+
+  .testimonials { grid-template-columns: 1fr; gap: 16px; }
+
+  .cta-banner, .cta-banner--plain { grid-template-columns: 1fr; text-align: center; }
+  .cta-banner__photo { min-height: 0; aspect-ratio: 16 / 9; }
+  .cta-banner__body { padding: 28px 22px; }
+  .cta-banner__body .btn { margin: 0 auto; min-height: 46px; }
+
+  .mini-actions { grid-template-columns: 1fr; }
+  .mini-action {
+    border-left: none;
+    border-top: 1px solid var(--grey-200);
+    justify-content: flex-start;
+    padding: 20px 4px;
+  }
+  .mini-action:first-child { border-top: none; }
+
+  .photo-collage { grid-template-columns: 1fr; }
+  .photo-collage__stack { grid-template-columns: 1fr 1fr; }
+
+  .footer .container { grid-template-columns: 1fr; padding: 40px var(--container-pad) 28px; gap: 30px; }
+  .footer__brand { grid-column: span 1; }
+  .footer__map { height: 160px; }
+  .footer__bottom .container { flex-direction: column; text-align: center; gap: 10px; }
+
+  .legal-box__row { gap: 24px; row-gap: 14px; }
+
+  .float-whatsapp { width: 50px; height: 50px; right: 16px; bottom: 16px; }
+  .float-whatsapp svg { width: 24px; height: 24px; }
+}
+
+/* ---------- F. Smartphone standard (430–575px) ----------
+   Ajustements de densité : les proportions héritées de la tablette
+   (2 colonnes) deviennent inconfortables ici — tout passe en une seule
+   colonne lisible, avec un padding réduit pour préserver la largeur utile. */
+@media (max-width: 575px) {
+  :root { --container-pad: 18px; }
+
+  .topbar { font-size: 12.5px; }
+  .topbar__group { gap: 10px 16px; }
+
+  .header .container { padding-top: 12px; padding-bottom: 12px; gap: 12px; }
+  .header__logo img { height: 34px; }
+
+  .hero__content { padding-top: clamp(48px, 12vw, 64px); padding-bottom: 40px; }
+
+  .pillars { grid-template-columns: 1fr; gap: 22px; text-align: left; }
+  .pillar { display: flex; align-items: flex-start; gap: 14px; text-align: left; }
+  .pillar__icon { margin: 0; flex-shrink: 0; }
+
+  .svc-card__body { padding: 18px; }
+  .check-card { padding: 18px 18px 18px 50px; }
+  .check-card__mark { left: 16px; top: 18px; }
+
+  .contact-actions { flex-direction: column; }
+  .contact-actions .btn { width: 100%; justify-content: center; }
+  .contact-card { padding: 24px 20px; }
+
+  .legal-box { padding: 22px 18px; }
+  .legal-box__row { flex-direction: column; gap: 14px; }
+
+  .faq-item__q { padding: 16px 16px; font-size: 15px; }
+  .faq-item.is-open .faq-item__a { max-height: 320px; }
+
+  .step__num { font-size: 30px; }
+}
+
+/* ---------- G. Petit smartphone (≤ 429px) ----------
+   Les appareils les plus contraints : chaque pixel compte. On resserre
+   encore la grille des chiffres-clés (2 colonnes restent lisibles à ce
+   gabarit) et on retire tout superflu visuel qui n'apporte rien ici. */
+@media (max-width: 429px) {
+  :root { --container-pad: 16px; }
+
+  .topbar__item { font-size: 12px; }
+  .topbar__group { row-gap: 8px; }
+
+  .btn { padding: 12px 20px; font-size: 14.5px; }
+  .btn--sm { padding: 9px 15px; font-size: 13.5px; }
+
+  .hero h1 { letter-spacing: -0.01em; }
+  .hero p, .page-hero p { font-size: 14.5px; }
+
+  .stats .container { gap: 18px 10px; }
+  .stats__num { font-size: 22px; }
+  .stats__label { font-size: 12.5px; }
+
+  .trio-stats { grid-template-columns: 1fr; gap: 16px; padding: 26px 20px; }
+  .trio-stats > div { display: flex; align-items: baseline; justify-content: space-between; text-align: left; }
+
+  .photo-collage__stack { grid-template-columns: 1fr; }
+
+  .mobile-nav__link { font-size: 16px; padding: 13px 4px; }
+
+  .cta-banner__body h2 { font-size: 21px; }
+
+  .footer__contact li { font-size: 13.5px; }
+}
+
+/* =========================================================================
+   ACCESSIBILITÉ — Préférence "mouvement réduit"
+   ---------------------------------------------------------------------
+   Priorité absolue sur tout le reste du fichier : les personnes qui
+   activent ce réglage système reçoivent une interface tout aussi
+   complète, sans aucune animation ni transition perceptible.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, .reveal[data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .float-whatsapp { animation: none !important; }
+}
