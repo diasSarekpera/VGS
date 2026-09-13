@@ -53,7 +53,7 @@
 
 /* ---------- Réinitialisation de base ---------- */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -61,7 +61,6 @@ body {
   background: var(--white);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 img { max-width: 100%; display: block; }
 .icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
@@ -181,7 +180,7 @@ button { font-family: inherit; cursor: pointer; }
   width: 26px; height: 26px;
   display: flex; align-items: center; justify-content: center;
   border: 1px solid rgba(255,255,255,0.35);
-  border-radius: var(--radius-sm);
+  border-radius: 50%;
   color: var(--white);
 }
 .topbar__social a svg { width: 13px; height: 13px; }
@@ -208,23 +207,39 @@ button { font-family: inherit; cursor: pointer; }
 
 .nav { display: flex; align-items: center; gap: 34px; }
 .nav__link {
+  position: relative;
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 15px;
   color: var(--navy);
   padding: 6px 0;
-  border-bottom: 2px solid transparent;
 }
 .nav__link:hover { color: var(--green-dark); }
-.nav__link.is-active { color: var(--green-dark); border-bottom-color: var(--green); }
+.nav__link.is-active { color: var(--green-dark); }
+.nav__link::after,
+.nav__dropdown-toggle::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: center;
+}
+.nav__link:hover::after, .nav__link.is-active::after,
+.nav__dropdown-toggle:hover::after, .nav__dropdown-toggle.is-active::after {
+  transform: scaleX(1);
+}
 
 .nav__dropdown { position: relative; }
 .nav__dropdown-toggle {
+  position: relative;
   display: flex; align-items: center; gap: 5px;
   font-family: var(--font-heading); font-weight: 600; font-size: 15px;
   color: var(--navy); background: none; border: none; padding: 6px 0;
 }
 .nav__dropdown-toggle svg { width: 13px; height: 13px; }
+.nav__dropdown-toggle:hover { color: var(--green-dark); }
 .nav__dropdown-toggle.is-active { color: var(--green-dark); }
 .nav__dropdown-menu {
   position: absolute;
@@ -250,10 +265,12 @@ button { font-family: inherit; cursor: pointer; }
 .badge-soon { font-size: 11px; }
 .footer__disabled { color: rgba(255, 255, 255, 0.4); cursor: default; }
 .nav__dropdown:hover .nav__dropdown-menu,
-.nav__dropdown:focus-within .nav__dropdown-menu {
+.nav__dropdown:focus-within .nav__dropdown-menu,
+.nav__dropdown.is-open .nav__dropdown-menu {
   opacity: 1; visibility: visible; transform: translateY(0);
 }
-.nav__dropdown:hover .nav__dropdown-toggle svg { transform: rotate(180deg); }
+.nav__dropdown:hover .nav__dropdown-toggle svg,
+.nav__dropdown.is-open .nav__dropdown-toggle svg { transform: rotate(180deg); }
 .nav__dropdown-menu a {
   display: block;
   padding: 10px 12px;
@@ -282,6 +299,7 @@ button { font-family: inherit; cursor: pointer; }
   z-index: 200;
   padding: 20px;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .mobile-nav.is-open { display: block; }
 .mobile-nav__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
@@ -295,7 +313,19 @@ button { font-family: inherit; cursor: pointer; }
   display: block; padding: 15px 4px; font-family: var(--font-heading);
   font-weight: 600; font-size: 17px; color: var(--navy); border-bottom: 1px solid var(--grey-200);
 }
-.mobile-nav__sub { padding-left: 16px; }
+.mobile-nav__link--toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; background: none; border: none; border-bottom: 1px solid var(--grey-200);
+  cursor: pointer; text-align: left;
+}
+.mobile-nav__link--toggle svg { width: 16px; height: 16px; flex-shrink: 0; transition: transform var(--dur-base) var(--ease-out); }
+.mobile-nav__link--toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.mobile-nav__sub {
+  padding-left: 16px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--dur-base) var(--ease-out);
+}
 .mobile-nav__sub a { display: block; padding: 11px 4px; font-size: 15px; color: var(--grey-600); }
 .mobile-nav__cta { margin-top: 22px; }
 
@@ -376,15 +406,20 @@ button { font-family: inherit; cursor: pointer; }
   padding: 34px 20px;
 }
 
-/* ---------- Grille de cartes services ---------- */
+/* ---------- Grille de cartes services ----------
+   Flexbox plutôt que CSS Grid : quand la dernière ligne est incomplète
+   (ex. 5 cartes sur 2 colonnes -> 2+2+1), elle se centre automatiquement
+   au lieu de laisser un orphelin collé à gauche avec un vide à droite. */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 22px;
 }
-.card-grid--5 { grid-template-columns: repeat(5, 1fr); }
-.card-grid--2 { grid-template-columns: repeat(2, 1fr); }
-.card-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.card-grid > * { flex: 1 1 calc(25% - 16.5px); max-width: calc(25% - 16.5px); }
+.card-grid--5 > * { flex-basis: calc(20% - 17.6px); max-width: calc(20% - 17.6px); }
+.card-grid--2 > * { flex-basis: calc(50% - 11px); max-width: calc(50% - 11px); }
+.card-grid--3 > * { flex-basis: calc(33.333% - 14.7px); max-width: calc(33.333% - 14.7px); }
 
 .svc-card {
   background: var(--white);
@@ -393,9 +428,10 @@ button { font-family: inherit; cursor: pointer; }
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  width: 100%;
   /* transition defined once, in the Motion Design section below */
 }
-.svc-card:hover { box-shadow: var(--shadow-md); border-color: transparent; }
+/* hover state defined once, in the Motion Design section below (color-only, no shadow growth) */
 .svc-card__photo { aspect-ratio: 16 / 9; overflow: hidden; }
 .svc-card__photo img { width: 100%; height: 100%; object-fit: cover; }
 .svc-card__body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
@@ -410,18 +446,21 @@ button { font-family: inherit; cursor: pointer; }
 .svc-card__body h3 { margin-bottom: 8px; }
 .svc-card__body p { font-size: 14.5px; flex: 1; margin-bottom: 14px; }
 
-/* Carte simple à coche (listes de documents) */
+/* Carte simple à coche (listes de documents) — même logique flex centrée */
 .check-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 18px;
 }
+.check-grid > * { flex: 1 1 calc(33.333% - 12px); max-width: calc(33.333% - 12px); }
 .check-card {
   background: var(--white);
   border: 1px solid var(--grey-200);
   border-radius: var(--radius-lg);
   padding: 20px 20px 20px 54px;
   position: relative;
+  width: 100%;
 }
 .check-card__mark {
   position: absolute; left: 18px; top: 20px;
@@ -436,10 +475,12 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ---------- Piliers (icône + texte, sans carte) ---------- */
 .pillars {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 32px;
 }
+.pillars > * { flex: 1 1 calc(25% - 24px); max-width: calc(25% - 24px); }
 .pillar { text-align: center; }
 .pillar__icon {
   width: 54px; height: 54px;
@@ -452,12 +493,14 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ---------- Étapes numérotées ---------- */
 .steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 36px;
   position: relative;
 }
-.steps--3 { grid-template-columns: repeat(3, 1fr); }
+.steps > * { flex: 1 1 25%; max-width: 25%; }
+.steps--3 > * { flex-basis: 33.333%; max-width: 33.333%; }
 .step { text-align: center; padding: 0 18px; position: relative; }
 .step__num {
   font-family: var(--font-heading);
@@ -477,8 +520,11 @@ button { font-family: inherit; cursor: pointer; }
   border-top: 2px dashed var(--grey-300);
   display: none;
 }
-@media (min-width: 1024px) {
-  .step:not(:last-child)::after { display: block; }
+@media (min-width: 1025px) {
+  .steps:not(.steps--3) .step:not(:last-child)::after { display: block; }
+}
+@media (min-width: 768px) {
+  .steps--3 .step:not(:last-child)::after { display: block; }
 }
 
 /* ---------- Bloc CTA fort ---------- */
@@ -691,7 +737,7 @@ button { font-family: inherit; cursor: pointer; }
 .footer__social { display: flex; gap: 10px; }
 .footer__social a {
   width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.25);
-  border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
 .footer__social a svg { width: 15px; height: 15px; }
 .footer__social a:hover { background: var(--green); border-color: var(--green); }
@@ -707,9 +753,10 @@ button { font-family: inherit; cursor: pointer; }
   grid-template-columns: none;
 }
 .footer__bottom p { margin: 0; font-size: 13px; color: rgba(255,255,255,0.6); }
-.footer__bottom-links { display: flex; gap: 20px; }
+.footer__bottom-links { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: center; }
 .footer__bottom-links a { font-size: 13px; color: rgba(255,255,255,0.6); }
 .footer__bottom-links a:hover { color: var(--white); }
+.footer__bottom-links span { font-size: 13px; color: rgba(255,255,255,0.6); }
 
 /* ---------- Bouton WhatsApp flottant ---------- */
 .float-whatsapp {
@@ -765,9 +812,9 @@ select:focus-visible, textarea:focus-visible {
 }
 
 /* ---------- 3. Boutons ----------
-   Hover : légère élévation + ombre — le bouton "répond" au curseur.
-   Active : retour au plat, transition très courte — sensation de clic.
-   Disabled : plus aucun mouvement, opacité réduite. */
+   Hover : uniquement un changement de couleur (par variante, voir plus
+   haut) — l'élément ne se soulève jamais. Active : léger retour au
+   plat pour la sensation de clic. Disabled : opacité réduite. */
 .btn {
   transition: background var(--dur-base) var(--ease-out),
               color var(--dur-base) var(--ease-out),
@@ -775,25 +822,22 @@ select:focus-visible, textarea:focus-visible {
               box-shadow var(--dur-base) var(--ease-out),
               transform var(--dur-fast) var(--ease-out);
 }
-.btn--primary:hover, .btn--accent:hover,
-.btn--outline:hover, .btn--outline-light:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
 .btn:active { transform: translateY(0); box-shadow: var(--shadow-sm); transition-duration: 90ms; }
 .btn:disabled, .btn[disabled] {
   opacity: 0.55; cursor: not-allowed; box-shadow: none; transform: none;
 }
 .btn svg { transition: transform var(--dur-base) var(--ease-out); }
 
-/* ---------- 4. Liens & icônes de navigation ---------- */
-.nav__link {
-  transition: color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+/* ---------- 4. Liens & icônes de navigation ----------
+   Soulignement qui part du centre et rejoint les deux bords au survol
+   (scaleX depuis transform-origin: center) — jamais un simple fondu. */
+.nav__link, .nav__dropdown-toggle {
+  transition: color var(--dur-base) var(--ease-out);
 }
-.nav__link:hover:not(.is-active) { border-bottom-color: rgba(18, 138, 46, 0.35); }
+.nav__link::after, .nav__dropdown-toggle::after {
+  transition: transform var(--dur-base) var(--ease-out);
+}
 
-.nav__dropdown-toggle { transition: color var(--dur-base) var(--ease-out); }
-.nav__dropdown-toggle:hover { color: var(--green-dark); }
 .nav__dropdown-toggle svg { transition: transform var(--dur-base) var(--ease-out); }
 .nav__dropdown-menu {
   transition: opacity var(--dur-base) var(--ease-out),
@@ -809,10 +853,8 @@ select:focus-visible, textarea:focus-visible {
 }
 .topbar__social a, .footer__social a {
   transition: background var(--dur-base) var(--ease-out),
-              border-color var(--dur-base) var(--ease-out),
-              transform var(--dur-fast) var(--ease-out);
+              border-color var(--dur-base) var(--ease-out);
 }
-.topbar__social a:hover, .footer__social a:hover { transform: translateY(-2px); }
 
 .mobile-nav__link, .mobile-nav__sub a {
   transition: color var(--dur-base) var(--ease-out), padding-left var(--dur-base) var(--ease-out);
@@ -820,14 +862,13 @@ select:focus-visible, textarea:focus-visible {
 .mobile-nav__link:hover, .mobile-nav__sub a:hover { padding-left: 4px; color: var(--green-dark); }
 
 /* ---------- 5. Cartes ----------
-   Élévation + zoom photo doux : la carte "sort" légèrement de la page,
-   l'icône se colore pour confirmer l'interaction. */
+   Le survol change uniquement la couleur (bordure, icône) — jamais de
+   soulèvement ni de grossissement d'ombre. Seul le contenu interne
+   (icône, photo) peut bouger légèrement pour signaler l'interaction. */
 .svc-card {
-  transition: box-shadow var(--dur-slow) var(--ease-out),
-              transform var(--dur-slow) var(--ease-out),
-              border-color var(--dur-slow) var(--ease-out);
+  transition: border-color var(--dur-slow) var(--ease-out);
 }
-.svc-card:hover { transform: translateY(-6px); }
+.svc-card:hover { border-color: var(--green); }
 .svc-card__photo img { transition: transform var(--dur-slow) var(--ease-out); }
 .svc-card:hover .svc-card__photo img { transform: scale(1.06); }
 .svc-card__icon { transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
@@ -835,15 +876,15 @@ select:focus-visible, textarea:focus-visible {
 .svc-card:hover .svc-card__icon { background: var(--green); transform: scale(1.06); }
 .svc-card:hover .svc-card__icon svg { color: var(--white); }
 
-.check-card { transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
-.check-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.check-card { transition: border-color var(--dur-base) var(--ease-out); }
+.check-card:hover { border-color: var(--green); }
 .check-card__mark { transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
 .check-card__mark svg { transition: color var(--dur-base) var(--ease-out); }
 .check-card:hover .check-card__mark { background: var(--green); transform: scale(1.08); }
 .check-card:hover .check-card__mark svg { color: var(--white); }
 
-.testimonial { transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
-.testimonial:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.testimonial { transition: border-color var(--dur-base) var(--ease-out); }
+.testimonial:hover { border-color: var(--green); }
 
 /* ---------- 6. Piliers, étapes, mini-actions ---------- */
 .pillar__icon svg { transition: transform var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
@@ -893,20 +934,20 @@ select:focus-visible, textarea:focus-visible {
   transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
 .mobile-nav.is-open .mobile-nav__link, .mobile-nav.is-open .mobile-nav__cta { opacity: 1; transform: translateY(0); }
-.mobile-nav.is-open .mobile-nav__link:nth-of-type(1) { transition-delay: 40ms; }
-.mobile-nav.is-open .mobile-nav__link:nth-of-type(2) { transition-delay: 80ms; }
-.mobile-nav.is-open .mobile-nav__link:nth-of-type(3) { transition-delay: 120ms; }
-.mobile-nav.is-open .mobile-nav__link:nth-of-type(4) { transition-delay: 160ms; }
+.mobile-nav.is-open .mobile-nav__link:nth-child(2) { transition-delay: 40ms; }
+.mobile-nav.is-open .mobile-nav__link:nth-child(3) { transition-delay: 80ms; }
+.mobile-nav.is-open .mobile-nav__link:nth-child(5) { transition-delay: 120ms; }
+.mobile-nav.is-open .mobile-nav__link:nth-child(6) { transition-delay: 160ms; }
 .mobile-nav.is-open .mobile-nav__cta { transition-delay: 200ms; }
 
 /* ---------- 9. Bouton WhatsApp flottant ----------
    Respiration très discrète pour attirer l'œil sans jamais distraire ;
    suspendue au survol pour laisser place au retour tactile direct. */
 .float-whatsapp {
-  transition: transform var(--dur-base) var(--ease-out);
+  transition: background var(--dur-base) var(--ease-out);
   animation: floatPulse 2.8s var(--ease-in-out) infinite;
 }
-.float-whatsapp:hover { transform: scale(1.08); animation-play-state: paused; }
+.float-whatsapp:hover { background: var(--green-dark); animation-play-state: paused; }
 @keyframes floatPulse {
   0%, 100% { box-shadow: var(--shadow-lg); }
   50% { box-shadow: var(--shadow-lg), 0 0 0 8px rgba(18, 138, 46, 0.12); }
@@ -914,17 +955,21 @@ select:focus-visible, textarea:focus-visible {
 
 /* ---------- 10. Apparitions au scroll ----------
    Moteur générique piloté par script/main.js (IntersectionObserver).
-   .reveal + [data-reveal] définissent l'état de départ ; .is-visible
-   ramène l'élément à son état final. Propriétés GPU uniquement
-   (opacity, transform) pour une fluidité maximale. */
+   Sécurité par conception : un élément .reveal est TOUJOURS visible tant
+   que le script n'a pas explicitement pris en charge son animation (classe
+   .reveal-armed ajoutée par JS juste avant de l'observer). Si main.js ne
+   se charge pas, plante, ou si JS est désactivé, aucun élément ne passe
+   jamais à l'état masqué : le contenu reste lisible dans tous les cas.
+   .is-visible ramène l'élément à son état final une fois l'animation
+   déclenchée. Propriétés GPU uniquement (opacity, transform). */
 .reveal {
-  opacity: 0;
   transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
 }
-.reveal[data-reveal="up"] { transform: translateY(var(--reveal-distance)); }
-.reveal[data-reveal="left"] { transform: translateX(calc(-1 * var(--reveal-distance) * 1.4)); }
-.reveal[data-reveal="right"] { transform: translateX(calc(var(--reveal-distance) * 1.4)); }
-.reveal[data-reveal="scale"] { transform: scale(0.96); }
+.reveal.reveal-armed { opacity: 0; }
+.reveal.reveal-armed[data-reveal="up"] { transform: translateY(var(--reveal-distance)); }
+.reveal.reveal-armed[data-reveal="left"] { transform: translateX(calc(-1 * var(--reveal-distance) * 1.4)); }
+.reveal.reveal-armed[data-reveal="right"] { transform: translateX(calc(var(--reveal-distance) * 1.4)); }
+.reveal.reveal-armed[data-reveal="scale"] { transform: scale(0.96); }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ---------- 11. Transition de page ----------
@@ -999,7 +1044,7 @@ body {
    mais les grilles à 5 colonnes commencent à écraser les cartes :
    on referme d'un cran plutôt que de laisser les proportions se casser. */
 @media (max-width: 1279px) {
-  .card-grid--5 { grid-template-columns: repeat(3, 1fr); }
+  .card-grid--5 > * { flex-basis: calc(33.333% - 14.7px); max-width: calc(33.333% - 14.7px); }
   .footer .container { grid-template-columns: 1fr 1fr; }
   .footer__brand { grid-column: span 2; }
   .cta-banner { grid-template-columns: 220px 1fr; }
@@ -1014,18 +1059,21 @@ body {
    menu plein écran, pensé pour le doigt. Les grilles passent à 2 colonnes
    (ni écrasées à 3, ni gaspillées à 1) et les formulaires s'étirent en
    pleine largeur pour rester confortables à remplir au doigt. */
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
   .nav, .header__actions .btn { display: none; }
   .header__burger { display: flex; }
 
-  .card-grid, .card-grid--5, .card-grid--2, .card-grid--3, .check-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .card-grid > *, .card-grid--5 > *, .card-grid--2 > *, .card-grid--3 > * {
+    flex-basis: calc(50% - 11px); max-width: calc(50% - 11px);
   }
+  .check-grid > * { flex-basis: calc(50% - 9px); max-width: calc(50% - 9px); }
 
-  .pillars { grid-template-columns: repeat(2, 1fr); gap: 32px 20px; }
+  .pillars { gap: 32px 20px; }
+  .pillars > * { flex-basis: calc(50% - 10px); max-width: calc(50% - 10px); }
 
-  .steps, .steps--3 { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
-  .step { text-align: left; padding: 0; }
+  .steps:not(.steps--3) { gap: 32px 24px; }
+  .steps:not(.steps--3) > * { flex-basis: calc(50% - 12px); max-width: calc(50% - 12px); }
+  .steps:not(.steps--3) .step { text-align: left; padding: 0; }
 
   .testimonials { grid-template-columns: repeat(2, 1fr); gap: 18px; }
 
@@ -1036,6 +1084,7 @@ body {
   .callback { grid-template-columns: 1fr; }
   .callback__intro { border-left: none; border-top: 4px solid var(--green); }
   .callback__form, .form-grid { grid-template-columns: 1fr; }
+  .field--full { grid-column: span 1; }
   .callback__form .btn { grid-column: span 1; justify-self: stretch; }
 
   .contact-grid { grid-template-columns: 1fr; }
@@ -1066,15 +1115,18 @@ body {
   .stats .container { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; padding-top: 26px; padding-bottom: 26px; }
   .stats__item:nth-child(3) { border-left: none; }
 
-  .card-grid, .card-grid--5, .card-grid--2, .card-grid--3, .check-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  .card-grid > *, .card-grid--5 > *, .card-grid--2 > *, .card-grid--3 > *, .check-grid > * {
+    flex-basis: 100%; max-width: 100%;
   }
+  .card-grid, .card-grid--5, .card-grid--2, .card-grid--3, .check-grid { gap: 16px; }
   .svc-card__photo { aspect-ratio: 16 / 10; }
 
-  .pillars { grid-template-columns: repeat(2, 1fr); gap: 26px 14px; }
+  .pillars > * { flex-basis: calc(50% - 7px); max-width: calc(50% - 7px); }
+  .pillars { gap: 26px 14px; }
 
-  .steps, .steps--3 { grid-template-columns: 1fr; gap: 28px; }
+  .steps > *, .steps--3 > * { flex-basis: 100%; max-width: 100%; }
+  .steps, .steps--3 { gap: 28px; }
+  .steps .step:not(:last-child)::after, .steps--3 .step:not(:last-child)::after { display: none; }
   .step { text-align: center; padding: 0 12px; }
 
   .testimonials { grid-template-columns: 1fr; gap: 16px; }
@@ -1122,7 +1174,8 @@ body {
 
   .hero__content { padding-top: clamp(48px, 12vw, 64px); padding-bottom: 40px; }
 
-  .pillars { grid-template-columns: 1fr; gap: 22px; text-align: left; }
+  .pillars > * { flex-basis: 100%; max-width: 100%; }
+  .pillars { gap: 22px; }
   .pillar { display: flex; align-items: flex-start; gap: 14px; text-align: left; }
   .pillar__icon { margin: 0; flex-shrink: 0; }
 
@@ -1189,7 +1242,7 @@ body {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal, .reveal[data-reveal] {
+  .reveal, .reveal.reveal-armed {
     opacity: 1 !important;
     transform: none !important;
   }

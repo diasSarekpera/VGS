@@ -17,10 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function openMobileNav() {
     mobileNav.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
   }
   function closeMobileNav() {
     mobileNav.classList.remove('is-open');
+    document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
   }
 
@@ -35,6 +37,21 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) {
         closeMobileNav();
       }
+    });
+  }
+
+  // --- Sous-menu "Services" du menu mobile ---
+  // Ouvert par défaut (comportement inchangé), mais désormais un vrai
+  // bouton accessible : on peut le replier/déplier au tap, comme le
+  // menu déroulant "Services" en version bureau.
+  var mobileServicesToggle = document.querySelector('.mobile-nav__link--toggle');
+  var mobileServicesSub = document.getElementById('mobile-services-sub');
+  if (mobileServicesToggle && mobileServicesSub) {
+    mobileServicesSub.style.maxHeight = mobileServicesSub.scrollHeight + 'px';
+    mobileServicesToggle.addEventListener('click', function () {
+      var willExpand = mobileServicesToggle.getAttribute('aria-expanded') !== 'true';
+      mobileServicesToggle.setAttribute('aria-expanded', String(willExpand));
+      mobileServicesSub.style.maxHeight = willExpand ? mobileServicesSub.scrollHeight + 'px' : '0px';
     });
   }
 
@@ -82,18 +99,40 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', toggleHeaderShadow, { passive: true });
   }
 
-  // --- Menu déroulant "Services" : synchronise aria-expanded ---
-  // L'affichage reste piloté par CSS (:hover / :focus-within) ; ce script
-  // ne fait que refléter l'état pour les technologies d'assistance.
+  // --- Menu déroulant "Services" ---
+  // L'affichage repose sur :hover / :focus-within (CSS), ce qui couvre déjà
+  // souris et clavier. On ajoute un clic explicite en filet de sécurité :
+  // certains navigateurs tactiles (notamment Safari iPad) ne déclenchent
+  // pas :hover et gèrent :focus-within de façon inconstante au premier tap.
   document.querySelectorAll('.nav__dropdown').forEach(function (dropdown) {
     var toggle = dropdown.querySelector('.nav__dropdown-toggle');
     if (!toggle) return;
     var setExpanded = function (value) { toggle.setAttribute('aria-expanded', value); };
     dropdown.addEventListener('mouseenter', function () { setExpanded('true'); });
-    dropdown.addEventListener('mouseleave', function () { setExpanded('false'); });
+    dropdown.addEventListener('mouseleave', function () {
+      if (!dropdown.classList.contains('is-open')) setExpanded('false');
+    });
     dropdown.addEventListener('focusin', function () { setExpanded('true'); });
     dropdown.addEventListener('focusout', function (e) {
-      if (!dropdown.contains(e.relatedTarget)) setExpanded('false');
+      if (!dropdown.contains(e.relatedTarget) && !dropdown.classList.contains('is-open')) {
+        setExpanded('false');
+      }
+    });
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = !dropdown.classList.contains('is-open');
+      document.querySelectorAll('.nav__dropdown.is-open').forEach(function (d) {
+        if (d !== dropdown) { d.classList.remove('is-open'); }
+      });
+      dropdown.classList.toggle('is-open', willOpen);
+      setExpanded(willOpen ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.nav__dropdown.is-open').forEach(function (d) {
+      d.classList.remove('is-open');
+      var t = d.querySelector('.nav__dropdown-toggle');
+      if (t) t.setAttribute('aria-expanded', 'false');
     });
   });
 
@@ -156,8 +195,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // En mode "mouvement réduit", tout reste visible en permanence (géré
-  // aussi côté CSS par sécurité) : on n'observe donc rien de plus.
+  // En mode "mouvement réduit" ou navigateur sans IntersectionObserver,
+  // on n'arme rien : tout reste visible en permanence (déjà le cas par
+  // défaut désormais, cette ligne est surtout défensive).
   if (reduceMotion || !('IntersectionObserver' in window)) return;
 
   var io = new IntersectionObserver(function (entries, observer) {
@@ -169,8 +209,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
+  // On n'arme (masque) un élément qu'au moment précis où l'observateur est
+  // effectivement attaché dessus — jamais avant. Si ce code ne s'exécute
+  // jamais (script non chargé, erreur plus haut dans le fichier, JS
+  // désactivé), aucun élément n'est masqué : le CSS reste visible par défaut.
   document.querySelectorAll('.reveal').forEach(function (el) {
+    el.classList.add('reveal-armed');
     io.observe(el);
   });
+
+  // Filet de sécurité : les robots d'indexation, les outils de prévisualisation
+  // (aperçus de lien WhatsApp/Facebook) et certains contrôles qualité ne
+  // simulent aucun scroll et ne verraient donc jamais le contenu sous la ligne
+  // de flottaison. Passé ce délai, tout élément pas encore révélé l'est de
+  // force — sans gêner les visiteurs réels, qui ont largement le temps de
+  // scroller et de voir l'animation avant cette échéance.
+  window.setTimeout(function () {
+    document.querySelectorAll('.reveal:not(.is-visible)').forEach(function (el) {
+      el.classList.add('is-visible');
+    });
+  }, 2500);
 
 });
