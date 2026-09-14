@@ -44,8 +44,8 @@
   --container-pad: clamp(16px, 4vw, 20px);
 
   /* Espacements de section — fluides, un seul token pour tous les écrans */
-  --section-py: clamp(40px, 3.6vw + 22px, 88px);
-  --section-gap-head: clamp(28px, 2.4vw + 16px, 48px);
+  --section-py: clamp(56px, 4.2vw + 32px, 104px);
+  --section-gap-head: clamp(34px, 2.6vw + 20px, 52px);
 
   /* Grille fluide de cartes : nombre de colonnes ajusté par largeur mini de carte */
   --card-min: 240px;
@@ -53,7 +53,7 @@
 
 /* ---------- Réinitialisation de base ---------- */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -61,6 +61,8 @@ body {
   background: var(--white);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
 }
 img { max-width: 100%; display: block; }
 .icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
@@ -284,7 +286,7 @@ button { font-family: inherit; cursor: pointer; }
 .header__burger {
   display: none;
   width: 40px; height: 40px;
-  border: 1px solid var(--grey-300);
+  border: none;
   border-radius: var(--radius-sm);
   background: var(--white);
   align-items: center; justify-content: center;
@@ -387,9 +389,25 @@ button { font-family: inherit; cursor: pointer; }
   gap: 20px;
   padding-top: 34px;
   padding-bottom: 34px;
+  --stats-gap: 20px;
 }
-.stats__item { text-align: center; border-left: 1px solid var(--grey-200); }
-.stats__item:first-child { border-left: none; }
+.stats__item {
+  position: relative;
+  text-align: center;
+  margin-left: calc(var(--stats-gap) / -2);
+  padding-left: calc(var(--stats-gap) / 2);
+}
+.stats__item:first-child { margin-left: 0; padding-left: 0; }
+.stats__item:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 34px;
+  background: var(--grey-200);
+}
 .stats__num { font-family: var(--font-heading); font-weight: 700; font-size: 26px; color: var(--green-dark); display: block; }
 .stats__num--text { font-size: 20px; }
 .stats__label { font-size: 13.5px; color: var(--grey-600); }
@@ -478,18 +496,20 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 32px;
+  gap: 44px 32px;
 }
 .pillars > * { flex: 1 1 calc(25% - 24px); max-width: calc(25% - 24px); }
 .pillar { text-align: center; }
 .pillar__icon {
-  width: 54px; height: 54px;
-  margin: 0 auto 16px;
+  width: 60px; height: 60px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--green-pale);
   display: flex; align-items: center; justify-content: center;
 }
-.pillar__icon svg { width: 34px; height: 34px; color: var(--green); }
-.pillar h3 { margin-bottom: 6px; }
-.pillar p { font-size: 14px; margin: 0; }
+.pillar__icon svg { width: 30px; height: 30px; color: var(--green); }
+.pillar h3 { margin-bottom: 8px; }
+.pillar p { font-size: 14px; line-height: 1.65; margin: 0; }
 
 /* ---------- Étapes numérotées ---------- */
 .steps {
@@ -537,6 +557,7 @@ button { font-family: inherit; cursor: pointer; }
   grid-template-columns: clamp(200px, 20vw, 280px) 1fr;
   align-items: center;
 }
+.cta-banner > * { min-width: 0; }
 .cta-banner__photo { height: 100%; min-height: 190px; }
 .cta-banner__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cta-banner__body { padding: 34px 40px; }
@@ -596,9 +617,10 @@ button { font-family: inherit; cursor: pointer; }
   gap: 56px;
   align-items: center;
 }
+.split > * { min-width: 0; }
 .split--reverse { direction: rtl; }
 .split--reverse > * { direction: ltr; }
-.split img { border-radius: var(--radius-lg); width: 100%; }
+.split img { border-radius: var(--radius-lg); width: 100%; height: auto; display: block; }
 .split-list { margin-top: 18px; }
 .split-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 15px; color: var(--grey-900); }
 .split-list svg { width: 18px; height: 18px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
@@ -629,7 +651,7 @@ button { font-family: inherit; cursor: pointer; }
   padding: 30px 34px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 0 18px;
   align-items: start;
 }
 .callback__form textarea,
@@ -638,14 +660,14 @@ button { font-family: inherit; cursor: pointer; }
 .field--full { grid-column: span 2; }
 
 /* ---------- Formulaires ---------- */
-.field { margin-bottom: 18px; }
+.field { margin-bottom: 24px; }
 .field label {
   display: block; font-family: var(--font-heading); font-weight: 600;
-  font-size: 14px; color: var(--navy); margin-bottom: 7px;
+  font-size: 14px; color: var(--navy); margin-bottom: 9px;
 }
 .field input, .field select, .field textarea {
   width: 100%;
-  padding: 12px 14px;
+  padding: 15px 16px;
   border: 1.5px solid var(--grey-300);
   border-radius: var(--radius-md);
   font-family: var(--font-body);
@@ -656,7 +678,7 @@ button { font-family: inherit; cursor: pointer; }
 .field input:focus, .field select:focus, .field textarea:focus {
   outline: none; border-color: var(--green);
 }
-.field textarea { resize: vertical; min-height: 120px; }
+.field textarea { resize: vertical; min-height: 130px; line-height: 1.5; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
 
 /* ---------- Bloc contact ---------- */
@@ -797,6 +819,7 @@ button { font-family: inherit; cursor: pointer; }
 :root {
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1); /* progression régulière, sans "à-coup" — dédiée aux changements de couleur (bordure, fond, texte) */
   --dur-fast: 180ms;   /* hover ponctuel (icônes, liens) */
   --dur-base: 260ms;   /* changement d'état (boutons, cartes simples) */
   --dur-slow: 450ms;   /* cartes riches, menu, en-tête */
@@ -816,10 +839,10 @@ select:focus-visible, textarea:focus-visible {
    haut) — l'élément ne se soulève jamais. Active : léger retour au
    plat pour la sensation de clic. Disabled : opacité réduite. */
 .btn {
-  transition: background var(--dur-base) var(--ease-out),
-              color var(--dur-base) var(--ease-out),
-              border-color var(--dur-base) var(--ease-out),
-              box-shadow var(--dur-base) var(--ease-out),
+  transition: background var(--dur-base) var(--ease-soft),
+              color var(--dur-base) var(--ease-soft),
+              border-color var(--dur-base) var(--ease-soft),
+              box-shadow var(--dur-base) var(--ease-soft),
               transform var(--dur-fast) var(--ease-out);
 }
 .btn:active { transform: translateY(0); box-shadow: var(--shadow-sm); transition-duration: 90ms; }
@@ -832,7 +855,7 @@ select:focus-visible, textarea:focus-visible {
    Soulignement qui part du centre et rejoint les deux bords au survol
    (scaleX depuis transform-origin: center) — jamais un simple fondu. */
 .nav__link, .nav__dropdown-toggle {
-  transition: color var(--dur-base) var(--ease-out);
+  transition: color var(--dur-base) var(--ease-soft);
 }
 .nav__link::after, .nav__dropdown-toggle::after {
   transition: transform var(--dur-base) var(--ease-out);
@@ -844,20 +867,20 @@ select:focus-visible, textarea:focus-visible {
               transform var(--dur-base) var(--ease-out),
               visibility var(--dur-base);
 }
-.nav__dropdown-menu a { transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+.nav__dropdown-menu a { transition: background var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft); }
 
 .link-arrow svg { transition: transform var(--dur-base) var(--ease-out); }
 
 .footer ul li a, .footer__bottom-links a, .breadcrumb a, .topbar__item a {
-  transition: color var(--dur-base) var(--ease-out);
+  transition: color var(--dur-base) var(--ease-soft);
 }
 .topbar__social a, .footer__social a {
-  transition: background var(--dur-base) var(--ease-out),
-              border-color var(--dur-base) var(--ease-out);
+  transition: background var(--dur-base) var(--ease-soft),
+              border-color var(--dur-base) var(--ease-soft);
 }
 
 .mobile-nav__link, .mobile-nav__sub a {
-  transition: color var(--dur-base) var(--ease-out), padding-left var(--dur-base) var(--ease-out);
+  transition: color var(--dur-base) var(--ease-soft), padding-left var(--dur-base) var(--ease-out);
 }
 .mobile-nav__link:hover, .mobile-nav__sub a:hover { padding-left: 4px; color: var(--green-dark); }
 
@@ -866,34 +889,34 @@ select:focus-visible, textarea:focus-visible {
    soulèvement ni de grossissement d'ombre. Seul le contenu interne
    (icône, photo) peut bouger légèrement pour signaler l'interaction. */
 .svc-card {
-  transition: border-color var(--dur-slow) var(--ease-out);
+  transition: border-color var(--dur-slow) var(--ease-soft);
 }
 .svc-card:hover { border-color: var(--green); }
 .svc-card__photo img { transition: transform var(--dur-slow) var(--ease-out); }
 .svc-card:hover .svc-card__photo img { transform: scale(1.06); }
-.svc-card__icon { transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
-.svc-card__icon svg { transition: color var(--dur-base) var(--ease-out); }
+.svc-card__icon { transition: background var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-out); }
+.svc-card__icon svg { transition: color var(--dur-base) var(--ease-soft); }
 .svc-card:hover .svc-card__icon { background: var(--green); transform: scale(1.06); }
 .svc-card:hover .svc-card__icon svg { color: var(--white); }
 
-.check-card { transition: border-color var(--dur-base) var(--ease-out); }
+.check-card { transition: border-color var(--dur-slow) var(--ease-soft); }
 .check-card:hover { border-color: var(--green); }
-.check-card__mark { transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
-.check-card__mark svg { transition: color var(--dur-base) var(--ease-out); }
+.check-card__mark { transition: background var(--dur-base) var(--ease-soft), transform var(--dur-base) var(--ease-out); }
+.check-card__mark svg { transition: color var(--dur-base) var(--ease-soft); }
 .check-card:hover .check-card__mark { background: var(--green); transform: scale(1.08); }
 .check-card:hover .check-card__mark svg { color: var(--white); }
 
-.testimonial { transition: border-color var(--dur-base) var(--ease-out); }
+.testimonial { transition: border-color var(--dur-slow) var(--ease-soft); }
 .testimonial:hover { border-color: var(--green); }
 
 /* ---------- 6. Piliers, étapes, mini-actions ---------- */
-.pillar__icon svg { transition: transform var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
+.pillar__icon svg { transition: transform var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-soft); }
 .pillar:hover .pillar__icon svg { transform: scale(1.12) rotate(-4deg); color: var(--green-dark); }
 
 .step__num { display: inline-block; transition: transform var(--dur-base) var(--ease-out); }
 .step:hover .step__num { transform: translateY(-3px); }
 
-.mini-action { transition: background var(--dur-base) var(--ease-out); }
+.mini-action { transition: background var(--dur-base) var(--ease-soft); }
 .mini-action:hover { background: var(--grey-100); }
 .mini-action svg { transition: transform var(--dur-base) var(--ease-out); }
 .mini-action:hover svg { transform: scale(1.1); }
@@ -904,7 +927,7 @@ select:focus-visible, textarea:focus-visible {
    s'appuient sur la validation native du navigateur : aucune fausse
    confirmation d'envoi n'est simulée. */
 .field input, .field select, .field textarea {
-  transition: border-color var(--dur-base) var(--ease-out);
+  transition: border-color var(--dur-base) var(--ease-soft);
 }
 .field input:hover, .field select:hover, .field textarea:hover { border-color: var(--grey-600); }
 .field.is-touched input:invalid, .field.is-touched select:invalid, .field.is-touched textarea:invalid {
@@ -944,7 +967,7 @@ select:focus-visible, textarea:focus-visible {
    Respiration très discrète pour attirer l'œil sans jamais distraire ;
    suspendue au survol pour laisser place au retour tactile direct. */
 .float-whatsapp {
-  transition: background var(--dur-base) var(--ease-out);
+  transition: background var(--dur-base) var(--ease-soft);
   animation: floatPulse 2.8s var(--ease-in-out) infinite;
 }
 .float-whatsapp:hover { background: var(--green-dark); animation-play-state: paused; }
@@ -1068,7 +1091,7 @@ body {
   }
   .check-grid > * { flex-basis: calc(50% - 9px); max-width: calc(50% - 9px); }
 
-  .pillars { gap: 32px 20px; }
+  .pillars { gap: 40px 20px; }
   .pillars > * { flex-basis: calc(50% - 10px); max-width: calc(50% - 10px); }
 
   .steps:not(.steps--3) { gap: 32px 24px; }
@@ -1112,8 +1135,9 @@ body {
 
   .page-hero { padding-bottom: 44px; }
 
-  .stats .container { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; padding-top: 26px; padding-bottom: 26px; }
-  .stats__item:nth-child(3) { border-left: none; }
+  .stats .container { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; padding-top: 26px; padding-bottom: 26px; --stats-gap: 12px; }
+  .stats__item:nth-child(3) { margin-left: 0; padding-left: 0; }
+  .stats__item:nth-child(3)::before { display: none; }
 
   .card-grid > *, .card-grid--5 > *, .card-grid--2 > *, .card-grid--3 > *, .check-grid > * {
     flex-basis: 100%; max-width: 100%;
@@ -1122,7 +1146,7 @@ body {
   .svc-card__photo { aspect-ratio: 16 / 10; }
 
   .pillars > * { flex-basis: calc(50% - 7px); max-width: calc(50% - 7px); }
-  .pillars { gap: 26px 14px; }
+  .pillars { gap: 30px 14px; }
 
   .steps > *, .steps--3 > * { flex-basis: 100%; max-width: 100%; }
   .steps, .steps--3 { gap: 28px; }
@@ -1175,9 +1199,20 @@ body {
   .hero__content { padding-top: clamp(48px, 12vw, 64px); padding-bottom: 40px; }
 
   .pillars > * { flex-basis: 100%; max-width: 100%; }
-  .pillars { gap: 22px; }
-  .pillar { display: flex; align-items: flex-start; gap: 14px; text-align: left; }
-  .pillar__icon { margin: 0; flex-shrink: 0; }
+  .pillars { gap: 0; }
+  .pillar {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    text-align: left;
+    padding: 20px 0;
+  }
+  .pillar:not(:last-child) { border-bottom: 1px solid var(--grey-200); }
+  .pillar:first-child { padding-top: 0; }
+  .pillar:last-child { padding-bottom: 0; }
+  .pillar__icon { width: 48px; height: 48px; margin: 0; flex-shrink: 0; }
+  .pillar__icon svg { width: 24px; height: 24px; }
+  .pillar h3 { margin-bottom: 5px; }
 
   .svc-card__body { padding: 18px; }
   .check-card { padding: 18px 18px 18px 50px; }
@@ -1212,7 +1247,7 @@ body {
   .hero h1 { letter-spacing: -0.01em; }
   .hero p, .page-hero p { font-size: 14.5px; }
 
-  .stats .container { gap: 18px 10px; }
+  .stats .container { gap: 18px 10px; --stats-gap: 10px; }
   .stats__num { font-size: 22px; }
   .stats__label { font-size: 12.5px; }
 
