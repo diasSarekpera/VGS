@@ -178,7 +178,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // colonnes .split s'ouvrent depuis leur bord extérieur, les grilles
   // de cartes montent avec un léger décalage (stagger) qui guide l'œil
   // de gauche à droite sans jamais ralentir la lecture.
-  var revealGroups = [
+  // La page Contact est volontairement exclue de ce moteur : c'est une
+  // page utilitaire (formulaire, coordonnées) que l'utilisateur doit
+  // pouvoir lire et remplir immédiatement, sans dépendre du timing du
+  // scroll ou d'un IntersectionObserver pour que le contenu apparaisse.
+  var isContactPage = !!document.querySelector('.contact-grid');
+
+  var revealGroups = isContactPage ? [] : [
     { selector: '.section-head', direction: 'up' },
     { selector: '.stats__item', direction: 'up', stagger: 70 },
     { selector: '.svc-card', direction: 'up', stagger: 90 },
