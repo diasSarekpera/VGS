@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { selector: '.cta-banner, .cta-banner--plain', direction: 'up' },
     { selector: '.callback', direction: 'up' },
     { selector: '.contact-card', direction: 'left' },
-    { selector: '.contact-photo, .map-frame', direction: 'right' },
+    { selector: '.map-frame', direction: 'right' },
     { selector: '.mini-action', direction: 'up', stagger: 80 },
     { selector: '.faq-item', direction: 'up', stagger: 60 }
   ];
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
 
   // On n'arme (masque) un élément qu'au moment précis où l'observateur est
   // effectivement attaché dessus — jamais avant. Si ce code ne s'exécute
@@ -251,6 +251,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.reveal:not(.is-visible)').forEach(function (el) {
       el.classList.add('is-visible');
     });
-  }, 2500);
+  }, 1200);
 
 });
