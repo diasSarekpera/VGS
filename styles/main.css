@@ -618,6 +618,32 @@ button { font-family: inherit; cursor: pointer; }
   align-items: center;
 }
 .split > * { min-width: 0; }
+
+/* Sécurité anti-débordement mobile : par défaut, un enfant de grille/flex
+   refuse de rétrécir sous la taille de son contenu le plus large (un
+   <select>, un champ de formulaire...). Sans ce reset, ces blocs peuvent
+   dépasser la largeur de l'écran sur mobile — silencieusement masqué par
+   overflow-x:hidden, donnant un contenu "collé à gauche" avec un vide
+   sur le bord droit. Déjà appliqué à .split ci-dessus ; étendu ici à
+   toutes les autres grilles/flex du site. */
+.contact-grid > *,
+.callback__form > *,
+.form-grid > *,
+.footer .container > *,
+.stats .container > *,
+.trio-stats > *,
+.photo-collage > *,
+.card-grid > *,
+.card-grid--5 > *,
+.card-grid--2 > *,
+.card-grid--3 > *,
+.check-grid > *,
+.pillars > *,
+.steps > *,
+.mini-actions > *,
+.testimonials > * {
+  min-width: 0;
+}
 .split--reverse { direction: rtl; }
 .split--reverse > * { direction: ltr; }
 .split img { border-radius: var(--radius-lg); width: 100%; height: auto; display: block; }
