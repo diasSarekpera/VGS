@@ -41,13 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // --- Sous-menu "Services" du menu mobile ---
-  // Ouvert par défaut (comportement inchangé), mais désormais un vrai
-  // bouton accessible : on peut le replier/déplier au tap, comme le
-  // menu déroulant "Services" en version bureau.
+  // Fermé par défaut : c'est le visiteur qui décide de l'ouvrir au tap,
+  // comme le menu déroulant "Services" en version bureau. L'état initial
+  // suit l'attribut aria-expanded défini dans le HTML.
   var mobileServicesToggle = document.querySelector('.mobile-nav__link--toggle');
   var mobileServicesSub = document.getElementById('mobile-services-sub');
   if (mobileServicesToggle && mobileServicesSub) {
-    mobileServicesSub.style.maxHeight = mobileServicesSub.scrollHeight + 'px';
+    var mobileServicesInitiallyExpanded = mobileServicesToggle.getAttribute('aria-expanded') === 'true';
+    mobileServicesSub.style.maxHeight = mobileServicesInitiallyExpanded ? mobileServicesSub.scrollHeight + 'px' : '0px';
     mobileServicesToggle.addEventListener('click', function () {
       var willExpand = mobileServicesToggle.getAttribute('aria-expanded') !== 'true';
       mobileServicesToggle.setAttribute('aria-expanded', String(willExpand));
@@ -135,6 +136,28 @@ document.addEventListener('DOMContentLoaded', function () {
       if (t) t.setAttribute('aria-expanded', 'false');
     });
   });
+
+  // --- Bouton WhatsApp flottant : éviter le doublon visuel ---
+  // Certaines sections (carte agent en page Contact, CTA de fin de page)
+  // affichent déjà un bouton WhatsApp dédié. Quand une de ces zones est
+  // à l'écran, la bulle flottante — toujours en position fixe en bas à
+  // droite — se superposerait à ce bouton. On la masque temporairement
+  // tant que l'utilisateur voit déjà un moyen équivalent de nous écrire.
+  var floatWhatsapp = document.querySelector('.float-whatsapp');
+  var duplicateWaCtas = document.querySelectorAll(
+    '.contact-actions a[href*="wa.me"], .cta-banner a[href*="wa.me"], .cta-banner--plain a[href*="wa.me"]'
+  );
+  if (floatWhatsapp && duplicateWaCtas.length && 'IntersectionObserver' in window) {
+    var waVisibleCount = 0;
+    var waIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        waVisibleCount += entry.isIntersecting ? 1 : -1;
+      });
+      waVisibleCount = Math.max(0, waVisibleCount);
+      floatWhatsapp.classList.toggle('is-hidden', waVisibleCount > 0);
+    }, { threshold: 0.4 });
+    duplicateWaCtas.forEach(function (el) { waIO.observe(el); });
+  }
 
   // --- État "visité" des champs de formulaire ---
   // N'active un style d'erreur/succès que si le navigateur détecte une

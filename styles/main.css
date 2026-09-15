@@ -285,13 +285,13 @@ button { font-family: inherit; cursor: pointer; }
 .header__actions { display: flex; align-items: center; gap: 16px; }
 .header__burger {
   display: none;
-  width: 40px; height: 40px;
+  width: 48px; height: 48px;
   border: none;
   border-radius: var(--radius-sm);
   background: var(--white);
   align-items: center; justify-content: center;
 }
-.header__burger svg { width: 20px; height: 20px; color: var(--navy); }
+.header__burger svg { width: 26px; height: 26px; color: var(--navy); }
 
 /* ---------- Menu mobile ---------- */
 .mobile-nav {
@@ -307,10 +307,10 @@ button { font-family: inherit; cursor: pointer; }
 .mobile-nav__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
 .mobile-nav__top img { height: 32px; width: auto; }
 .mobile-nav__close {
-  width: 38px; height: 38px; border: 1px solid var(--grey-300); border-radius: var(--radius-sm);
+  width: 48px; height: 48px; border: none; border-radius: var(--radius-sm);
   background: none; display: flex; align-items: center; justify-content: center;
 }
-.mobile-nav__close svg { width: 18px; height: 18px; }
+.mobile-nav__close svg { width: 26px; height: 26px; color: var(--navy); }
 .mobile-nav__link {
   display: block; padding: 15px 4px; font-family: var(--font-heading);
   font-weight: 600; font-size: 17px; color: var(--navy); border-bottom: 1px solid var(--grey-200);
@@ -681,6 +681,52 @@ button { font-family: inherit; cursor: pointer; }
 .field textarea { resize: vertical; min-height: 130px; line-height: 1.5; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
 
+/* ---------- Correction du style d'auto-remplissage (Chrome / Safari / Edge) ----------
+   Ces navigateurs imposent un fond jaune/bleu et une police système dès que le
+   champ est rempli automatiquement. L'astuce ci-dessous force, via une box-shadow
+   interne géante et une transition très longue, le fond et la police du site. */
+.field input:-webkit-autofill,
+.field input:-webkit-autofill:hover,
+.field input:-webkit-autofill:active,
+.field select:-webkit-autofill,
+.field select:-webkit-autofill:hover,
+.field select:-webkit-autofill:active,
+.field textarea:-webkit-autofill,
+.field textarea:-webkit-autofill:hover,
+.field textarea:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--grey-900);
+  -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
+  box-shadow: 0 0 0 1000px var(--white) inset;
+  border-color: var(--grey-300);
+  caret-color: var(--grey-900);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+}
+.field input:-webkit-autofill:focus,
+.field select:-webkit-autofill:focus,
+.field textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
+  box-shadow: 0 0 0 1000px var(--white) inset;
+  border-color: var(--green);
+}
+
+/* ---------- Correction du style d'auto-remplissage (Firefox) ---------- */
+.field input:autofill,
+.field select:autofill,
+.field textarea:autofill {
+  filter: none;
+  background-color: var(--white) !important;
+  color: var(--grey-900) !important;
+  border-color: var(--grey-300);
+  font-family: var(--font-body);
+}
+.field input:autofill:focus,
+.field select:autofill:focus,
+.field textarea:autofill:focus {
+  border-color: var(--green);
+}
+
 /* ---------- Bloc contact ---------- */
 .contact-grid {
   display: grid;
@@ -967,10 +1013,19 @@ select:focus-visible, textarea:focus-visible {
    Respiration très discrète pour attirer l'œil sans jamais distraire ;
    suspendue au survol pour laisser place au retour tactile direct. */
 .float-whatsapp {
-  transition: background var(--dur-base) var(--ease-soft);
+  transition: background var(--dur-base) var(--ease-soft),
+              opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
   animation: floatPulse 2.8s var(--ease-in-out) infinite;
 }
 .float-whatsapp:hover { background: var(--green-dark); animation-play-state: paused; }
+/* Masqué quand un bouton WhatsApp équivalent (carte agent, CTA de page)
+   est déjà visible à l'écran : évite le doublon superposé au tap. */
+.float-whatsapp.is-hidden {
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
 @keyframes floatPulse {
   0%, 100% { box-shadow: var(--shadow-lg); }
   50% { box-shadow: var(--shadow-lg), 0 0 0 8px rgba(18, 138, 46, 0.12); }
@@ -1103,6 +1158,14 @@ body {
   .split { grid-template-columns: 1fr; gap: 32px; }
   .split--reverse { direction: ltr; }
   .split img { max-height: 340px; object-fit: cover; }
+  /* Le bloc empile l'image et le texte en une seule colonne : l'effet de
+     glissement latéral gauche/droite n'a plus de sens et peut pousser le
+     texte hors de l'écran (rogné par overflow-x: hidden). On bascule sur
+     une apparition verticale, cohérente avec la mise en page empilée. */
+  .split .reveal.reveal-armed[data-reveal="left"],
+  .split .reveal.reveal-armed[data-reveal="right"] {
+    transform: translateY(var(--reveal-distance));
+  }
 
   .callback { grid-template-columns: 1fr; }
   .callback__intro { border-left: none; border-top: 4px solid var(--green); }
